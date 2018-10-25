@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Spatial Navigation Polyfill v1.0
 * : common function for Spatial Navigation
 *
