@@ -3,5 +3,11 @@
   "version": "1.0",
   "description": "extension for spatial navigation",
   "manifest_version": 2,
-  "devtools_page": "devtool.html"
+  "devtools_page": "devtool.html",
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["spatnav-heuristic.js"]
+    }
+  ]
 }
