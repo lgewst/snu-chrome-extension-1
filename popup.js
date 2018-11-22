@@ -28,7 +28,7 @@ function saveOptions() {
         // Update status to let user know options were saved.
         const status = document.getElementById("status");
 
-        if (isOn === false) {
+        if (isOn == false) {
             setKeyOption("NONE");
         } else {
             setKeyOption(keyMode.value);
@@ -53,7 +53,7 @@ function restoreOptions() {
         document.getElementById("keyMode").value = items.keyMode;
         document.getElementById("switch").checked = items.isOn;
 
-        if (items.isOn === false) {
+        if (items.isOn == false) {
             setKeyOption("NONE");
         } else {
             setKeyOption(items.keyMode.value);
