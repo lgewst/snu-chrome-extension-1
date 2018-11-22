@@ -9,11 +9,15 @@ function setKeyOption(mode) {
         for (let i = 0; i < tabs.length; i++) {
             chrome.tabs.executeScript(tabs[i].id, {
                 code: setCode.concat(mode, "')")
+            }, (_) => {
+                const e = chrome.runtime.lastError;
+                if (e !== undefined) {
+                    console.log(tabs[i].id, _, e);
+                }
             });
         }
     });
 }
-
 
 /**
  * save keyMode options.
