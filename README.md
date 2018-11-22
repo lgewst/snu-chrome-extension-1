@@ -21,3 +21,7 @@
 ### 1. DevTool
 
 ### 2. PopUp 
+
+ 1. Click the toolbar icon.
+ 2. Turn On/Off SpatNav option and set key mode of SpatNav (using setKeyMode)
+ 
