@@ -1,100 +1,109 @@
 chrome.tabs.onActivated.addListener(function(tabId, changeInfo, tab) {
    
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.isContainer(document.activeElement);", {useContentScriptContext : true}, function(result) {
-        document.getElementById('container').innerHTML = result;
+        document.getElementById('container').innerText = result;
     });
 
 
 
-    chrome.devtools.inspectedWindow.eval("document.activeElement.focusableAreas({'mode': 'visible'});", {useContentScriptContext : true}, function(result) {
+    chrome.devtools.inspectedWindow.eval("document.activeElement.focusableAreas({'mode': 'visible'}).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
             result = "None";
         }
-        document.getElementById('visible').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('visible').innerText = result;
     });
 
-    chrome.devtools.inspectedWindow.eval("document.activeElement.focusableAreas({'mode': 'all'});", {useContentScriptContext : true}, function(result) {
+    chrome.devtools.inspectedWindow.eval("document.activeElement.focusableAreas({'mode': 'all'}).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
             result = "None";
         }
-        document.getElementById('all').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('all').innerText = result;
     });
 
 
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.spatialNavigationSearch('up').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('search_up').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('search_up').innerText = result;
     });
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.spatialNavigationSearch('down').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('search_down').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('search_down').innerText = result;
     });
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.spatialNavigationSearch('left').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('search_left').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('search_left').innerText = result;
     });
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.spatialNavigationSearch('right').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('search_right').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('search_right').innerText = result;
     });
 
 
 
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.findNextTarget(document.activeElement, 'up').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('up').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('up').innerText = result;
     });
     
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.findNextTarget(document.activeElement, 'down').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('down').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('down').innerText = result;
     });
 
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.findNextTarget(document.activeElement, 'left').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('left').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('left').innerText = result;
     });
     
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.findNextTarget(document.activeElement, 'right').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('right').innerHTML = "<xmp>" + result + "</xmp>";
+        document.getElementById('right').innerText = result;
     });
 
 
 
-    chrome.devtools.inspectedWindow.eval("(__spatialNavigation__.findCandidates(document.activeElement, 'up')).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
+    chrome.devtools.inspectedWindow.eval("function candidates_up(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'up'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'up'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_up();", {useContentScriptContext : true}, function(result) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i] + "\n";
+            temp += (i + 1) + ": " + result[i][0] + "\n" + result[i][1] + "\n";
         }
-        document.getElementById('candidates_up').innerHTML = "<xmp>" + temp + "</xmp>";
+        document.getElementById('candidates_up').innerText = temp;
     });
 
-    chrome.devtools.inspectedWindow.eval("(__spatialNavigation__.findCandidates(document.activeElement, 'down')).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
+    chrome.devtools.inspectedWindow.eval("function candidates_down(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'down'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'down'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_down();", {useContentScriptContext : true}, function(result) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i] + "\n";
+            temp += (i + 1) + ": " + result[i][0] + "\n" + result[i][1] + "\n";
         }
-        document.getElementById('candidates_down').innerHTML = "<xmp>" + temp + "</xmp>";
+        document.getElementById('candidates_down').innerText = temp;
     });
 
-    chrome.devtools.inspectedWindow.eval("(__spatialNavigation__.findCandidates(document.activeElement, 'left')).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
+    chrome.devtools.inspectedWindow.eval("function candidates_left(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'left'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'left'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_left();", {useContentScriptContext : true}, function(result) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i] + "\n";
+            temp += (i + 1) + ": " + result[i][0] + "\n" + result[i][1] + "\n";
         }
-        document.getElementById('candidates_left').innerHTML = "<xmp>" + temp + "</xmp>";
+        document.getElementById('candidates_left').innerText = temp;
     });
 
-    chrome.devtools.inspectedWindow.eval("(__spatialNavigation__.findCandidates(document.activeElement, 'right')).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
+    chrome.devtools.inspectedWindow.eval("function candidates_right(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'right'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'right'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_right();", {useContentScriptContext : true}, function(result) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i] + "\n";
+            temp += (i + 1) + ": " + result[i][0] + "\n" + result[i][1] + "\n";
         }
-        document.getElementById('candidates_right').innerHTML = "<xmp>" + temp + "</xmp>";
+        document.getElementById('candidates_right').innerText = temp;
     });
 
 
 
-    
+    chrome.devtools.inspectedWindow.eval("function container_list(){ var temp = document.activeElement.getSpatialNavigationContainer(); var list = []; var i = 0; while( temp != null){ list[i] = temp; i = i + 1; temp = temp.getSpatialNavigationContainer();} return list.map(a=>a.outerHTML);} container_list();", {useContentScriptContext : true}, function(result) {
+        var i;
+        var temp = "";
+        for(i = 0; i < result.length; i++){
+            temp += (i + 1) + ": " + result[i];
+        }
+        document.getElementById('container_list').innerText = temp;
+    });    
  }); 
+
+ 
