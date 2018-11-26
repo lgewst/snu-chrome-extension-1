@@ -19,50 +19,50 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (result.length == 0){
             result = "None";
         }
-        document.getElementById('visible').innerText = result;
+        document.getElementById('visible').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.focusableAreas({'mode': 'all'}).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
             result = "None";
         }
-        document.getElementById('all').innerText = result;
+        document.getElementById('all').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
 
 
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.spatialNavigationSearch('up').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('search_up').innerText = result;
+        document.getElementById('search_up').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.spatialNavigationSearch('down').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('search_down').innerText = result;
+        document.getElementById('search_down').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.spatialNavigationSearch('left').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('search_left').innerText = result;
+        document.getElementById('search_left').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.spatialNavigationSearch('right').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('search_right').innerText = result;
+        document.getElementById('search_right').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
 
 
 
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.findNextTarget(document.activeElement, 'up').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('up').innerText = result;
+        document.getElementById('up').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
     
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.findNextTarget(document.activeElement, 'down').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('down').innerText = result;
+        document.getElementById('down').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
 
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.findNextTarget(document.activeElement, 'left').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('left').innerText = result;
+        document.getElementById('left').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
     
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.findNextTarget(document.activeElement, 'right').outerHTML;", {useContentScriptContext : true}, function(result) {
-        document.getElementById('right').innerText = result;
+        document.getElementById('right').innerText = result.replace(/(\r\n\t|\n|\r\t)/gm,"");
     });
 
 
@@ -71,7 +71,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i][0] + "\n" + result[i][1] + "\n";
+            temp += (i + 1) + ": " + result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n" + result[i][1] + "\n";
         }
         document.getElementById('candidates_up').innerText = temp;
     });
@@ -80,7 +80,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i][0] + "\n" + result[i][1] + "\n";
+            temp += (i + 1) + ": " + result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n" + result[i][1] + "\n";
         }
         document.getElementById('candidates_down').innerText = temp;
     });
@@ -89,7 +89,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i][0] + "\n" + result[i][1] + "\n";
+            temp += (i + 1) + ": " + result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n" + result[i][1] + "\n";
         }
         document.getElementById('candidates_left').innerText = temp;
     });
@@ -98,7 +98,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i][0] + "\n" + result[i][1] + "\n";
+            temp += (i + 1) + ": " + result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n" + result[i][1] + "\n";
         }
         document.getElementById('candidates_right').innerText = temp;
     });
@@ -109,7 +109,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         var i;
         var temp = "";
         for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i];
+            temp += (i + 1) + ": " + result[i].replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n";
         }
         document.getElementById('container_list').innerText = temp;
     });    
