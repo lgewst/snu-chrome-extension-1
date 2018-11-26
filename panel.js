@@ -1,4 +1,13 @@
-chrome.tabs.onActivated.addListener(function(tabId, changeInfo, tab) {
+var backgroundPageConnection = chrome.runtime.connect({
+    name: "panel"
+});
+
+backgroundPageConnection.postMessage({
+    name: 'init',
+    tabId: chrome.devtools.inspectedWindow.tabId
+});
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
    
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.isContainer(document.activeElement);", {useContentScriptContext : true}, function(result) {
         document.getElementById('container').innerText = result;
