@@ -10,11 +10,15 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["http://*/*", "https://*/*", "<all_urls>"],
       "js": ["spatnav-heuristic.js", "content_script.js"]
     }
   ],
   "permissions": [
-    "activeTab", "tabs", "<all_urls>"
-  ]
+    "activeTab", "tabs", "<all_urls>", "storage"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
 }

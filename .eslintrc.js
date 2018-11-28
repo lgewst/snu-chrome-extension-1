@@ -3,7 +3,8 @@ module.exports = {
     "rules": {
         "quotes": ["error", "double"],
         "indent": ["error", 4],
-        "comma-dangle": ["error", "never"]
+        "comma-dangle": ["error", "never"],
+        "no-plusplus": "off"
     },
     "env": {
         "webextensions": true

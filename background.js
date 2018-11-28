@@ -1,48 +1,37 @@
-var connections = {};
 
-chrome.runtime.onConnect.addListener(function (port) {
-
-    var extensionListener = function (message, sender, sendResponse) {
-
-        // The original connection event doesn't include the tab ID of the
-        // DevTools page, so we need to send it explicitly.
-        if (message.name == "init") {
-          connections[message.tabId] = port;
-          return;
-        }
-
-	// other message handling
-    }
-
-    // Listen to messages sent from the DevTools page
-    port.onMessage.addListener(extensionListener);
-
-    port.onDisconnect.addListener(function(port) {
-        port.onMessage.removeListener(extensionListener);
-
-        var tabs = Object.keys(connections);
-        for (var i=0, len=tabs.length; i < len; i++) {
-          if (connections[tabs[i]] == port) {
-            delete connections[tabs[i]]
-            break;
-          }
+/**
+ * restore option when page is loaded or refreshed.
+ */
+function setOption(tabId) {
+    chrome.storage.sync.get({
+        keyMode: "ARROW",
+        isOn: true
+    }, (items) => {
+        const setCode = "window.__spatialNavigation__.setKeyMode('";
+        if (items.isOn == false) {
+            chrome.tabs.executeScript(tabId, {
+                code: setCode.concat("NONE')")
+            }, (_) => {
+                const e = chrome.runtime.lastError;
+                if (e != undefined) {
+                    console.log(tabId, _, e);
+                }
+            });
+        } else {
+            chrome.tabs.executeScript(tabId, {
+                code: setCode.concat(items.keyMode, "')")
+            }, (_) => {
+                const e = chrome.runtime.lastError;
+                if (e != undefined) {
+                    console.log(tabId, _, e);
+                }
+            });
         }
     });
-});
+}
 
-// Receive message from content script and relay to the devTools page for the
-// current tab
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    // Messages from content scripts should have sender.tab set
-    if (sender.tab) {
-      var tabId = sender.tab.id;
-      if (tabId in connections) {
-        connections[tabId].postMessage(request);
-      } else {
-        console.log("Tab not found in connection list.");
-      }
-    } else {
-      console.log("sender.tab not defined.");
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status == "complete") {
+        setOption(tabId);
     }
-    return true;
 });
