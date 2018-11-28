@@ -19,6 +19,8 @@
 ## Manual - TBD
 
 ### 1. DevTool
+ 1. Click the SpatialNavigation tab of developer's tool(F12 / ⌥ +⌘+I).
+ 2. You can see the information of Spatial Navigation on the tab. Also, the information is changed as the focusing moves.
 
 ### 2. PopUp 
 
