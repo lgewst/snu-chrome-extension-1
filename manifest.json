@@ -11,7 +11,8 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "<all_urls>"],
-      "js": ["spatnav-heuristic.js", "content_script.js"]
+      "js": ["spatnav-heuristic.js", "content_script.js"],
+      "css": ["content_script.css"]
     }
   ],
   "permissions": [
@@ -19,6 +20,6 @@
   ],
   "background": {
     "scripts": ["background.js"],
-    "persistent": false
+    "persistent": true
   }
 }
