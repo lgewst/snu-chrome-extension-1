@@ -11,19 +11,19 @@ function setOption(tabId) {
         if (items.isOn == false) {
             chrome.tabs.executeScript(tabId, {
                 code: setCode.concat("NONE')")
-            }, (_) => {
+            }, (err) => {
                 const e = chrome.runtime.lastError;
                 if (e != undefined) {
-                    console.log(tabId, _, e);
+                    console.log(tabId, err, e);
                 }
             });
         } else {
             chrome.tabs.executeScript(tabId, {
                 code: setCode.concat(items.keyMode, "')")
-            }, (_) => {
+            }, (err) => {
                 const e = chrome.runtime.lastError;
                 if (e != undefined) {
-                    console.log(tabId, _, e);
+                    console.log(tabId, err, e);
                 }
             });
         }
