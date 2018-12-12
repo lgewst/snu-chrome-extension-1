@@ -102,35 +102,30 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
-            var content = document.createTextNode("up: ");
-            parentDiv.appendChild(content);
-            var content2 = document.createElement("br");
-            parentDiv.appendChild(content2);
             var content3 = document.createTextNode("None");
             parentDiv.appendChild(content3);
         }
         else{
             var i;
             var temp;
-            var id = "candidates_up";
             var parentDiv = document.getElementById("candidates1");
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
-            var content = document.createTextNode("up: ");
-            parentDiv.appendChild(content);
     
             for(i = 0; i < result.length; i++){
-                id = id + (i + 1);
+                //var temp_id = id + (i + 1);
+                var temp_id = "candidates_up" + (i + 1);
                 var newDiv = document.createElement("div");
-                newDiv.setAttribute("id", id);
+                //newDiv.setAttribute("id", id);
+                newDiv.id = temp_id;
                 temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
     
                 // add the newly created element and its content into the DOM
-                var currentDiv = document.getElementById("candidates_up");
-                parentDiv.insertBefore(newDiv, currentDiv);
+                //var currentDiv = document.getElementById("candidates_up");
+                parentDiv.appendChild(newDiv);
             }
         }
     });
@@ -141,28 +136,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
-            var content = document.createTextNode("down: ");
-            parentDiv.appendChild(content);
-            var content2 = document.createElement("br");
-            parentDiv.appendChild(content2);
             var content3 = document.createTextNode("None");
             parentDiv.appendChild(content3);
         }
         else{
             var i;
             var temp;
-            var id = "candidates_down";
             var parentDiv = document.getElementById("candidates2");
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
-            var content = document.createTextNode("down: ");
-            parentDiv.appendChild(content);
     
             for(i = 0; i < result.length; i++){    
-                id = id + (i + 1);
+                var temp_id = "candidates_down" + (i + 1);
                 var newDiv = document.createElement("div");
-                newDiv.setAttribute("id", id);
+                newDiv.setAttribute("id", temp_id);
                 temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
@@ -180,28 +168,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
-            var content = document.createTextNode("left: ");
-            parentDiv.appendChild(content);
-            var content2 = document.createElement("br");
-            parentDiv.appendChild(content2);
             var content3 = document.createTextNode("None");
             parentDiv.appendChild(content3);
         }
         else{
             var i;
             var temp;
-            var id = "candidates_left";
             var parentDiv = document.getElementById("candidates3");
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
-            var content = document.createTextNode("left: ");
-            parentDiv.appendChild(content);
     
             for(i = 0; i < result.length; i++){
-                id = id + (i + 1);
+                var temp_id = "candidates_left" + (i + 1);
                 var newDiv = document.createElement("div");
-                newDiv.setAttribute("id", id);
+                newDiv.setAttribute("id", temp_id);
                 temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
@@ -219,28 +200,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
-            var content = document.createTextNode("right: ");
-            parentDiv.appendChild(content);
-            var content2 = document.createElement("br");
-            parentDiv.appendChild(content2);
             var content3 = document.createTextNode("None");
             parentDiv.appendChild(content3);
         }
         else{
             var i;
             var temp;
-            var id = "candidates_right";
             var parentDiv = document.getElementById("candidates4");
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
-            var content = document.createTextNode("right: ");
-            parentDiv.appendChild(content);
     
             for(i = 0; i < result.length; i++){
-                id = id + (i + 1);
+                var temp_id = "candidates_right" + (i + 1);
                 var newDiv = document.createElement("div");
-                newDiv.setAttribute("id", id);
+                newDiv.setAttribute("id", temp_id);
                 temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
@@ -261,17 +235,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         else{
             var i;
             var temp;
-            var id = "container_list";
             var parentDiv = document.getElementById("containerlist1");
             while (parentDiv.firstChild) {
                 parentDiv.removeChild(parentDiv.firstChild);
             }
     
             for(i = 0; i < result.length; i++){
-
-                id = id + (i + 1);
+                var temp_id = "container_list" + (i + 1);
                 var newDiv = document.createElement("div");
-                newDiv.setAttribute("id", id);
+                newDiv.setAttribute("id", temp_id);
                 temp = "(" + (i + 1) + ") " + result[i].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
@@ -281,8 +253,122 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 parentDiv.insertBefore(newDiv, currentDiv);
             }
         }
-    });       
+    }); 
  }); 
+
+ document.body.addEventListener('mouseover', function(event) {
+    var id = event.srcElement.id;
+    if(id){
+        document.getElementById(id).style.color = "red";
+   
+        if(id.includes('candidates_up')) {
+            var index = parseInt(id.substr(13)) - 1;
+            const pre_out_spat = '__spatialNavigation__.findCandidates(document.activeElement, "up")[';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.backgroundColor = "#FCADAB"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.outline = "thick #FFC0CB"')
+            });
+        }
+        else if(id.includes('candidates_down')) {
+            var index = parseInt(id.substr(15)) - 1;
+            const pre_out_spat = '__spatialNavigation__.findCandidates(document.activeElement, "down")[';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.backgroundColor = "#FCADAB"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.outline = "thick #FFC0CB"')
+            });
+        }
+        else if(id.includes('candidates_left')) {
+            var index = parseInt(id.substr(15)) - 1;
+            const pre_out_spat = '__spatialNavigation__.findCandidates(document.activeElement, "left")[';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.backgroundColor = "#FCADAB"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.outline = "thick #FFC0CB"')
+            });
+        }
+        else if(id.includes('candidates_right')) {
+            var index = parseInt(id.substr(16)) - 1;
+            const pre_out_spat = '__spatialNavigation__.findCandidates(document.activeElement, "right")[';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.backgroundColor = "#FCADAB"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.outline = "thick #FFC0CB"')
+            });
+        }
+        else if (id.includes('container_list')) {
+            var index = parseInt(id.substr(14)) - 1;
+            const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp.getSpatialNavigationContainer();} temp';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat('.style.backgroundColor = "#FCADAB"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat('.style.outline = "thick #FFC0CB"')
+            });
+        }
+    }
+ });
+ document.body.addEventListener('mouseout', function(event) {
+    var id = event.srcElement.id;
+    if(id){
+        document.getElementById(id).style.color = "black";
+        if(id.includes('candidates_up')) {
+            var index = parseInt(id.substr(13) - 1);
+            const pre_out_spat = '__spatialNavigation__.findCandidates(document.activeElement, "up")[';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.backgroundColor = "transparent"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.outline = "transparent"')
+            });
+        }
+        else if(id.includes('candidates_down')) {
+            var index = parseInt(id.substr(15)) - 1;
+            const pre_out_spat = '__spatialNavigation__.findCandidates(document.activeElement, "down")[';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.backgroundColor = "transparent"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.outline = "transparent"')
+            });
+        }
+        else if(id.includes('candidates_left')) {
+            var index = parseInt(id.substr(15)) - 1;
+            const pre_out_spat = '__spatialNavigation__.findCandidates(document.activeElement, "left")[';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.backgroundColor = "transparent"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.outline = "transparent"')
+            });
+        }
+        else if(id.includes('candidates_right')) {
+            var index = parseInt(id.substr(16)) - 1;
+            const pre_out_spat = '__spatialNavigation__.findCandidates(document.activeElement, "right")[';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.backgroundColor = "transparent"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat(index, '].style.outline = "transparent"')
+            });
+        }
+        else if (id.includes('container_list')) {
+            var index = parseInt(id.substr(14)) - 1;
+            const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp.getSpatialNavigationContainer();} temp';
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat('.style.backgroundColor = "transparent"')
+            });
+            chrome.tabs.executeScript({
+                code: pre_out_spat.concat('.style.outline = "transparent"')
+            });
+        }
+    }
+ });
 
  /**
  * call direction
@@ -297,6 +383,9 @@ for (var idx = 0 ; idx < direction.length ; idx++){
         document.getElementById(way).onmouseover = function(){mouseOver(way)};
         document.getElementById(way).onmouseout = function(){mouseOut(way)};
         var search = "search_".concat(way);
+        var candidates = "candidates".concat((idx + 1));
+        var candidates_id = "candidates_".concat(way);
+
         try {throw search}
         catch (search_way){
             document.getElementById(search_way).onmouseover = function(){mouseOver(search_way)};
@@ -304,6 +393,7 @@ for (var idx = 0 ; idx < direction.length ; idx++){
         }
     }
 }
+
 
 function mouseOut(way) {
     if (document.getElementById(way).innerText == "undefined") return;
@@ -321,7 +411,7 @@ function mouseOut(way) {
         });    
     }
 
-    else {
+    else if(document.getElementById(way).getAttribute('cmd') == 'spatnav_search'){
         //type 3 : spatnav_search
         var real_way = way.substr(7);
         const pre_out_spat = 'document.activeElement.spatialNavigationSearch("';
@@ -332,6 +422,7 @@ function mouseOut(way) {
             code: pre_out_spat.concat(real_way, '").style.outline = "transparent"')
         });
     }
+    
 }
 
 function mouseOver(way) {
@@ -349,7 +440,7 @@ function mouseOver(way) {
             code: pre_over_next.concat(way, '").style.outline = "thick #FFC0CB"')
         });
     }
-    else {
+    else if(document.getElementById(way).getAttribute('cmd') == 'spatnav_search') {
         //type 3 : spatnav_search
         var real_way = way.substr(7);
         const pre_over_spat = 'document.activeElement.spatialNavigationSearch("';
