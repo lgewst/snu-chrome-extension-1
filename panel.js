@@ -98,59 +98,159 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 
     chrome.devtools.inspectedWindow.eval("function candidates_up(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'up'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'up'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_up();", {useContentScriptContext : true}, function(result) {
-        if (result === undefined){
-            document.getElementById('candidates_up').innerText = 'undefined';
+        if (result.length == 0){
+            var parentDiv = document.getElementById("candidates1");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content = document.createTextNode("up: ");
+            parentDiv.appendChild(content);
+            var content2 = document.createElement("br");
+            parentDiv.appendChild(content2);
+            var content3 = document.createTextNode("None");
+            parentDiv.appendChild(content3);
         }
         else{
-        var i;
-        var temp = "";
-        for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n" + result[i][1] + "\n";
+            var i;
+            var temp;
+            var id = "candidates_up";
+            var parentDiv = document.getElementById("candidates1");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content = document.createTextNode("up: ");
+            parentDiv.appendChild(content);
+    
+            for(i = 0; i < result.length; i++){
+                id = id + (i + 1);
+                var newDiv = document.createElement("div");
+                newDiv.setAttribute("id", id);
+                temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                var newContent = document.createTextNode(temp);
+                newDiv.appendChild(newContent);
+    
+                // add the newly created element and its content into the DOM
+                var currentDiv = document.getElementById("candidates_up");
+                parentDiv.insertBefore(newDiv, currentDiv);
+            }
         }
-        document.getElementById('candidates_up').innerText = temp;
-    }
     });
 
     chrome.devtools.inspectedWindow.eval("function candidates_down(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'down'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'down'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_down();", {useContentScriptContext : true}, function(result) {
-        if (result === undefined){
-            document.getElementById('candidates_down').innerText = 'undefined';
+        if (result.length == 0){
+            var parentDiv = document.getElementById("candidates2");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content = document.createTextNode("down: ");
+            parentDiv.appendChild(content);
+            var content2 = document.createElement("br");
+            parentDiv.appendChild(content2);
+            var content3 = document.createTextNode("None");
+            parentDiv.appendChild(content3);
         }
         else{
-        var i;
-        var temp = "";
-        for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i][0].toString().replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n" + result[i][1] + "\n";
+            var i;
+            var temp;
+            var id = "candidates_down";
+            var parentDiv = document.getElementById("candidates2");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content = document.createTextNode("down: ");
+            parentDiv.appendChild(content);
+    
+            for(i = 0; i < result.length; i++){    
+                id = id + (i + 1);
+                var newDiv = document.createElement("div");
+                newDiv.setAttribute("id", id);
+                temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                var newContent = document.createTextNode(temp);
+                newDiv.appendChild(newContent);
+    
+                // add the newly created element and its content into the DOM
+                var currentDiv = document.getElementById("candidates_down");
+                parentDiv.insertBefore(newDiv, currentDiv);
+            }
         }
-        document.getElementById('candidates_down').innerText = temp;
-    }
     });
 
     chrome.devtools.inspectedWindow.eval("function candidates_left(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'left'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'left'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_left();", {useContentScriptContext : true}, function(result) {
-        if (result === undefined){
-            document.getElementById('candidates_left').innerText = undefined;
+        if (result.length == 0){
+            var parentDiv = document.getElementById("candidates3");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content = document.createTextNode("left: ");
+            parentDiv.appendChild(content);
+            var content2 = document.createElement("br");
+            parentDiv.appendChild(content2);
+            var content3 = document.createTextNode("None");
+            parentDiv.appendChild(content3);
         }
         else{
-        var i;
-        var temp = "";
-        for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i][0].toString().replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n" + result[i][1] + "\n";
+            var i;
+            var temp;
+            var id = "candidates_left";
+            var parentDiv = document.getElementById("candidates3");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content = document.createTextNode("left: ");
+            parentDiv.appendChild(content);
+    
+            for(i = 0; i < result.length; i++){
+                id = id + (i + 1);
+                var newDiv = document.createElement("div");
+                newDiv.setAttribute("id", id);
+                temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                var newContent = document.createTextNode(temp);
+                newDiv.appendChild(newContent);
+    
+                // add the newly created element and its content into the DOM
+                var currentDiv = document.getElementById("candidates_left");
+                parentDiv.insertBefore(newDiv, currentDiv);
+            }
         }
-        document.getElementById('candidates_left').innerText = temp;
-    }
     });
 
     chrome.devtools.inspectedWindow.eval("function candidates_right(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'right'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'right'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_right();", {useContentScriptContext : true}, function(result) {
-        if (result === undefined){
-            document.getElementById('candidates_right').innerText = 'undefined';   
+        if (result.length == 0){
+            var parentDiv = document.getElementById("candidates4");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content = document.createTextNode("right: ");
+            parentDiv.appendChild(content);
+            var content2 = document.createElement("br");
+            parentDiv.appendChild(content2);
+            var content3 = document.createTextNode("None");
+            parentDiv.appendChild(content3);
         }
         else{
-        var i;
-        var temp = "";
-        for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i][0].toString().replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n" + result[i][1] + "\n";
+            var i;
+            var temp;
+            var id = "candidates_right";
+            var parentDiv = document.getElementById("candidates4");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content = document.createTextNode("right: ");
+            parentDiv.appendChild(content);
+    
+            for(i = 0; i < result.length; i++){
+                id = id + (i + 1);
+                var newDiv = document.createElement("div");
+                newDiv.setAttribute("id", id);
+                temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                var newContent = document.createTextNode(temp);
+                newDiv.appendChild(newContent);
+    
+                // add the newly created element and its content into the DOM
+                var currentDiv = document.getElementById("candidates_right");
+                parentDiv.insertBefore(newDiv, currentDiv);
+            }
         }
-        document.getElementById('candidates_right').innerText = temp;
-    }
     });
 
 
@@ -160,12 +260,27 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             document.getElementById('container_list').innerText = 'undefined';
         }
         else{
-        var i;
-        var temp = "";
-        for(i = 0; i < result.length; i++){
-            temp += (i + 1) + ": " + result[i].toString().replace(/(\r\n\t|\n|\r\t)/gm,"") + "\n";
-        }
-        document.getElementById('container_list').innerText = temp;
+            var i;
+            var temp;
+            var id = "container_list";
+            var parentDiv = document.getElementById("containerlist1");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+    
+            for(i = 0; i < result.length; i++){
+
+                id = id + (i + 1);
+                var newDiv = document.createElement("div");
+                newDiv.setAttribute("id", id);
+                temp = "(" + (i + 1) + ") " + result[i].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                var newContent = document.createTextNode(temp);
+                newDiv.appendChild(newContent);
+    
+                // add the newly created element and its content into the DOM
+                var currentDiv = document.getElementById("container_list");
+                parentDiv.insertBefore(newDiv, currentDiv);
+            }
     }
     });    
     
