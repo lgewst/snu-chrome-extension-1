@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <title>Panel</title>
     <style>
+
         div {
             font-size: 1em;
+            line-height: 1.5em;
             overflow: hidden;
             white-space: nowrap;
-            text-overflow: ellipsis
+            text-overflow: ellipsis;
         }
+        h3 {
+            line-height:1.5em;
+        }
+
     </style>
 </head>
 <body>
@@ -23,7 +29,9 @@
     <input type="checkbox" id="Button_right" value="right">
     <label for="myBtn"> To Right</label>
 
-    <h2>[1] Is it container? : <div id="container"></div></h2>
+    <h3>There are <span id="focus_cnt" style="color:Tomato;"></span> focusable elements</h3>
+    <h2>[1] Is it container? : </h2>
+    <h3><div id="container"></div></h3>
     <h2>[2] Focusable areas</h2>
     <h3>visible: <div id="visible"></div></h3>
     <h3>all: <div id="all"></div></h3>
