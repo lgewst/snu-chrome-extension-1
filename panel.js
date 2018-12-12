@@ -1,4 +1,3 @@
-
 var backgroundPageConnection = chrome.runtime.connect({
     name: "panel"
 });
@@ -281,9 +280,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 var currentDiv = document.getElementById("container_list");
                 parentDiv.insertBefore(newDiv, currentDiv);
             }
-    }
-    });    
-    
+        }
+    });       
  }); 
 
  /**
@@ -308,60 +306,59 @@ for (var idx = 0 ; idx < direction.length ; idx++){
 }
 
 function mouseOut(way) {
- if (document.getElementById(way).innerText == "undefined") return;
+    if (document.getElementById(way).innerText == "undefined") return;
 
-document.getElementById(way).style.color = "black";
+    document.getElementById(way).style.color = "black";
 
-if (document.getElementById(way).getAttribute('cmd') == 'next') {
-    // type 4 : next target
-    const pre_out_next = 'window.__spatialNavigation__.findNextTarget(document.activeElement, "';
-    chrome.tabs.executeScript({
-        code: pre_out_next.concat(way, '").style.backgroundColor = "transparent"')
-    });
-    chrome.tabs.executeScript({
-        code: pre_out_next.concat(way, '").style.outline = "transparent"')
-    });
-    
-}
-else {
-    //type 3 : spatnav_search
-    var real_way = way.substr(7);
-    const pre_out_spat = 'document.activeElement.spatialNavigationSearch("';
-    chrome.tabs.executeScript({
-        code: pre_out_spat.concat(real_way, '").style.backgroundColor = "transparent"')
-    });
-    chrome.tabs.executeScript({
-        code: pre_out_spat.concat(real_way, '").style.outline = "transparent"')
-    });
-}
+    if (document.getElementById(way).getAttribute('cmd') == 'next') {
+        // type 4 : next target
+        const pre_out_next = 'window.__spatialNavigation__.findNextTarget(document.activeElement, "';
+        chrome.tabs.executeScript({
+            code: pre_out_next.concat(way, '").style.backgroundColor = "transparent"')
+        });
+        chrome.tabs.executeScript({
+            code: pre_out_next.concat(way, '").style.outline = "transparent"')
+        });    
+    }
+
+    else {
+        //type 3 : spatnav_search
+        var real_way = way.substr(7);
+        const pre_out_spat = 'document.activeElement.spatialNavigationSearch("';
+        chrome.tabs.executeScript({
+            code: pre_out_spat.concat(real_way, '").style.backgroundColor = "transparent"')
+        });
+        chrome.tabs.executeScript({
+            code: pre_out_spat.concat(real_way, '").style.outline = "transparent"')
+        });
+    }
 }
 
 function mouseOver(way) {
-if (document.getElementById(way).innerText == "undefined") return;
+    if (document.getElementById(way).innerText == "undefined") return;
 
-document.getElementById(way).style.color = "red";
+    document.getElementById(way).style.color = "red";
 
-if (document.getElementById(way).getAttribute('cmd') == 'next') {
-    // type 4 : next target
-    const pre_over_next = 'window.__spatialNavigation__.findNextTarget(document.activeElement, "';
-    chrome.tabs.executeScript({
-        code: pre_over_next.concat(way, '").style.backgroundColor = "#FCADAB"')
-    });
-    chrome.tabs.executeScript({
-        code: pre_over_next.concat(way, '").style.outline = "thick #FFC0CB"')
-    });
-    
-}
-else {
-    //type 3 : spatnav_search
-    var real_way = way.substr(7);
-    const pre_over_spat = 'document.activeElement.spatialNavigationSearch("';
-    chrome.tabs.executeScript({
-        code: pre_over_spat.concat(real_way, '").style.backgroundColor = "#FCADAB"')
-    });
-    chrome.tabs.executeScript({
-        code: pre_over_spat.concat(real_way, '").style.outline = "thick #FFC0CB"')
-    });
-}
+    if (document.getElementById(way).getAttribute('cmd') == 'next') {
+        // type 4 : next target
+        const pre_over_next = 'window.__spatialNavigation__.findNextTarget(document.activeElement, "';
+        chrome.tabs.executeScript({
+            code: pre_over_next.concat(way, '").style.backgroundColor = "#FCADAB"')
+        });
+        chrome.tabs.executeScript({
+            code: pre_over_next.concat(way, '").style.outline = "thick #FFC0CB"')
+        });
+    }
+    else {
+        //type 3 : spatnav_search
+        var real_way = way.substr(7);
+        const pre_over_spat = 'document.activeElement.spatialNavigationSearch("';
+        chrome.tabs.executeScript({
+            code: pre_over_spat.concat(real_way, '").style.backgroundColor = "#FCADAB"')
+        });
+        chrome.tabs.executeScript({
+            code: pre_over_spat.concat(real_way, '").style.outline = "thick #FFC0CB"')
+        });
+    }
 }
 
