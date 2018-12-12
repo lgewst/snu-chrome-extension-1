@@ -73,7 +73,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             chrome.devtools.inspectedWindow.eval(cmd_0, {useContentScriptContext : true}, function(result) {
                 try {throw result}
                 catch(res){
-                    if (res === undefined) document.getElementById(way).innerText = undefined;
+                    if (res === undefined) document.getElementById(way).innerText = 'undefined';
                     else document.getElementById(way).innerText = res.toString().replace(/(\r\n\t|\n|\r\t)/gm,"");    
                 }
                 document.getElementById(way).setAttribute('cmd','next');
@@ -88,7 +88,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 try {throw result2}
                 catch(res2){
                     if (res2 === undefined)
-                        document.getElementById(search_id).innerText = undefined;
+                        document.getElementById(search_id).innerText = "undefined";
                     else
                         document.getElementById(search_id).innerText = res2.toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
                 }
@@ -99,7 +99,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
     chrome.devtools.inspectedWindow.eval("function candidates_up(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'up'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'up'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_up();", {useContentScriptContext : true}, function(result) {
         if (result === undefined){
-            document.getElementById('candidates_up').innerText = undefined;
+            document.getElementById('candidates_up').innerText = 'undefined';
         }
         else{
         var i;
@@ -113,7 +113,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
     chrome.devtools.inspectedWindow.eval("function candidates_down(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'down'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'down'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_down();", {useContentScriptContext : true}, function(result) {
         if (result === undefined){
-            document.getElementById('candidates_down').innerText = undefined;
+            document.getElementById('candidates_down').innerText = 'undefined';
         }
         else{
         var i;
@@ -141,7 +141,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
     chrome.devtools.inspectedWindow.eval("function candidates_right(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'right'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'right'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_right();", {useContentScriptContext : true}, function(result) {
         if (result === undefined){
-            document.getElementById('candidates_right').innerText = undefined;   
+            document.getElementById('candidates_right').innerText = 'undefined';   
         }
         else{
         var i;
@@ -157,7 +157,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
     chrome.devtools.inspectedWindow.eval("function container_list(){ var temp = document.activeElement.getSpatialNavigationContainer(); var list = []; var i = 0; while( temp != null){ list[i] = temp; i = i + 1; temp = temp.getSpatialNavigationContainer();} return list.map(a=>a.outerHTML);} container_list();", {useContentScriptContext : true}, function(result) {
         if (result === undefined){
-            document.getElementById('container_list').innerText = undefined;
+            document.getElementById('container_list').innerText = 'undefined';
         }
         else{
         var i;
@@ -193,8 +193,7 @@ for (var idx = 0 ; idx < direction.length ; idx++){
 }
 
 function mouseOut(way) {
-
-if (document.getElementById(way) == null) return;
+ if (document.getElementById(way).innerText == "undefined") return;
 
 document.getElementById(way).style.color = "black";
 
@@ -202,7 +201,7 @@ if (document.getElementById(way).getAttribute('cmd') == 'next') {
     // type 4 : next target
     const pre_out_next = 'window.__spatialNavigation__.findNextTarget(document.activeElement, "';
     chrome.tabs.executeScript({
-        code: pre_out_next.concat(way, '").style.backgroundolor = "transparent"')
+        code: pre_out_next.concat(way, '").style.backgroundColor = "transparent"')
     });
     chrome.tabs.executeScript({
         code: pre_out_next.concat(way, '").style.outline = "transparent"')
@@ -223,7 +222,7 @@ else {
 }
 
 function mouseOver(way) {
-if (document.getElementById(way) == null) return;
+if (document.getElementById(way).innerText == "undefined") return;
 
 document.getElementById(way).style.color = "red";
 
@@ -231,10 +230,10 @@ if (document.getElementById(way).getAttribute('cmd') == 'next') {
     // type 4 : next target
     const pre_over_next = 'window.__spatialNavigation__.findNextTarget(document.activeElement, "';
     chrome.tabs.executeScript({
-        code: pre_over_next.concat(way, '").style.backgroundColor = "#DDA0DD"')
+        code: pre_over_next.concat(way, '").style.backgroundColor = "#FCADAB"')
     });
     chrome.tabs.executeScript({
-        code: pre_over_next.concat(way, '").style.outline = "thick #BA55D3"')
+        code: pre_over_next.concat(way, '").style.outline = "thick #FFC0CB"')
     });
     
 }
@@ -243,10 +242,10 @@ else {
     var real_way = way.substr(7);
     const pre_over_spat = 'document.activeElement.spatialNavigationSearch("';
     chrome.tabs.executeScript({
-        code: pre_over_spat.concat(real_way, '").style.backgroundColor = "#B0C4DE"')
+        code: pre_over_spat.concat(real_way, '").style.backgroundColor = "#FCADAB"')
     });
     chrome.tabs.executeScript({
-        code: pre_over_spat.concat(real_way, '").style.outline = "thick #6495ED"')
+        code: pre_over_spat.concat(real_way, '").style.outline = "thick #FFC0CB"')
     });
 }
 }
