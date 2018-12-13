@@ -208,3 +208,76 @@ hr {
   border-color: transparent;
   background-color: currentColor;
 }
+
+/* CSS for tooltip */
+/* https://codepen.io/deineko/pen/YZeQJP */
+
+@import url('https://fonts.googleapis.com/css?family=Raleway:200,200i,400,400i,500,500i,700,700i');
+
+/*tipped element. should be inline-block or block*/
+.qtip {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  color: #3bb4e5;
+  border-bottom: 0.05em dotted #3bb4e5;
+  box-sizing: border-box;
+  font-style: normal;
+  transition:all .25s ease-in-out
+}
+
+.qtip:hover {color:#0057e7;border-bottom:0.05em dotted #0057e7}
+/*the tip*/
+.qtip:before {
+  content: attr(data-tip);
+  font-size: 14px;
+  position: absolute;
+  background: rgba(10, 20, 30, 0.85);
+  color: #fff;
+  line-height: 1.2em;
+  padding: 0.5em;
+  font-style: normal;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  min-width: 120px;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s ease-in-out;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  font-family: sans-serif;
+  letter-spacing: 0;
+  font-weight: 600
+}
+
+.qtip:after {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  content: '';
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s ease-in-out
+}
+.qtip:hover:before,
+.qtip:hover:after {
+  visibility: visible;
+  opacity: 1
+}
+
+/*bottom*/
+.qtip.tip-bottom:before {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, calc(100% + 8px));
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+.qtip.tip-bottom:after {
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent rgba(10, 20, 30, 0.85) transparent;
+  bottom: -8px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
