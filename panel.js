@@ -218,7 +218,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 var temp_id = "all_list_" + (i + 1);
                 var newDiv = document.createElement("div");
                 newDiv.id = temp_id;
-                temp = (i+1) + " " + result[i].toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
+                temp = "[" + (i+1) + "] " + result[i].toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
                 parentDiv.appendChild(newDiv);
