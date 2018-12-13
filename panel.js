@@ -43,7 +43,36 @@ for (var idx = 0 ; idx < direction.length ; idx++){
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    
+    // if checked remove all outliner    
+     if (document.getElementById("Button_up").checked){
+        document.getElementById("Button_up").checked = false;
+          chrome.tabs.executeScript({
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+        });      
+    } 
+
+    if (document.getElementById("Button_down").checked){
+        document.getElementById("Button_down").checked = false;
+          chrome.tabs.executeScript({
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+        });      
+    } 
    
+    if (document.getElementById("Button_left").checked){
+        document.getElementById("Button_left").checked = false;
+          chrome.tabs.executeScript({
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+        });      
+    } 
+
+    if (document.getElementById("Button_right").checked){
+        document.getElementById("Button_right").checked = false;
+          chrome.tabs.executeScript({
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+        });      
+    } 
+
     chrome.devtools.inspectedWindow.eval("document.body.focusableAreas({'mode': 'all'}).length;", {useContentScriptContext : true}, function(result) {
         document.getElementById('focus_cnt').innerText = result;
     });
