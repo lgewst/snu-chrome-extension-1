@@ -487,7 +487,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         else if (id.includes('container_list')) {
             document.getElementById(id).style.color = "red";
             var index = parseInt(id.substr(14)) - 1;
-            const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp.getSpatialNavigationContainer();} temp';
+            const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp = temp.getSpatialNavigationContainer();} temp';
             chrome.tabs.executeScript({
                 code: pre_out_spat.concat('.style.backgroundColor = "#FCADAB"')
             });
@@ -565,7 +565,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         else if (id.includes('container_list')) {
             document.getElementById(id).style.color = "black";
             var index = parseInt(id.substr(14)) - 1;
-            const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp.getSpatialNavigationContainer();} temp';
+            const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp = temp.getSpatialNavigationContainer();} temp';
             chrome.tabs.executeScript({
                 code: pre_out_spat.concat('.style.backgroundColor = "transparent"')
             });
