@@ -12,7 +12,7 @@ backgroundPageConnection.postMessage({
 function coloring(dir) {   
     const pre_color = 'function find(){ var tmp = __spatialNavigation__.findCandidates(document.activeElement, "';
     chrome.tabs.executeScript({
-        code: pre_color.concat(dir, '"); var i; for (i = 0 ; i < tmp.length ; i++){ tmp[i].style.outline = "solid #B0C4DE"; } } find();')
+        code: pre_color.concat(dir, '"); if (tmp == undefined) return; var i; for (i = 0 ; i < tmp.length ; i++){ tmp[i].style.outline = "solid #B0C4DE"; } } find();')
     });
 }
 
@@ -20,14 +20,15 @@ function decoloring(dir){
 
     const pre_decolor = 'function find(){ var tmp = __spatialNavigation__.findCandidates(document.activeElement, "';
     chrome.tabs.executeScript({
-        code: pre_decolor.concat(dir,'"); var i; for (i = 0 ; i < tmp.length ; i++){ tmp[i].style.outline = "transparent"; } } find();')
+        code: pre_decolor.concat(dir,'"); if (tmp == undefined) return; var i; for (i = 0 ; i < tmp.length ; i++){ tmp[i].style.outline = "transparent"; } } find();')
     });
 }
 
 var direction = ["up","down","left","right"];
-
+    
+// set onclick methond on each direction button (show focusable element of 4 direction from active element)
 for (var idx = 0 ; idx < direction.length ; idx++){
-    // set onclick methond on each direction button
+
     try {throw direction[idx]}
     catch (way) {
         document.getElementById("Button_".concat(way)).onclick = function(){
@@ -48,28 +49,28 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
      if (document.getElementById("Button_up").checked){
         document.getElementById("Button_up").checked = false;
           chrome.tabs.executeScript({
-            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
         });      
     } 
 
     if (document.getElementById("Button_down").checked){
         document.getElementById("Button_down").checked = false;
           chrome.tabs.executeScript({
-            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
         });      
     } 
    
     if (document.getElementById("Button_left").checked){
         document.getElementById("Button_left").checked = false;
           chrome.tabs.executeScript({
-            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
         });      
     } 
 
     if (document.getElementById("Button_right").checked){
         document.getElementById("Button_right").checked = false;
           chrome.tabs.executeScript({
-            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
         });      
     } 
 
@@ -81,21 +82,69 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         document.getElementById('container').innerText = result;
     });
 
+
+    // must modify from here
+
     chrome.devtools.inspectedWindow.eval("document.activeElement.focusableAreas({'mode': 'visible'}).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
-            result = "None";
+            var parentDiv = document.getElementById("visible");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content3 = document.createTextNode("None");
+            parentDiv.appendChild(content3);
         }
-        document.getElementById('visible').innerText = result.toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
+        else{
+            var i;
+            var temp;
+            var parentDiv = document.getElementById("visible");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+    
+            for(i = 0; i < result.length; i++){
+                var temp_id = "visible_list_" + (i + 1);
+                var newDiv = document.createElement("div");
+                newDiv.id = temp_id;
+                temp = (i+1) + " " + result[i].toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
+                var newContent = document.createTextNode(temp);
+                newDiv.appendChild(newContent);
+                parentDiv.appendChild(newDiv);
+            }
+        }
     });
 
     chrome.devtools.inspectedWindow.eval("document.activeElement.focusableAreas({'mode': 'all'}).map(a => a.outerHTML);", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
-            result = "None";
+            var parentDiv = document.getElementById("all");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+            var content3 = document.createTextNode("None");
+            parentDiv.appendChild(content3);
         }
-        document.getElementById('all').innerText = result.toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
+        else{
+            var i;
+            var temp;
+            var parentDiv = document.getElementById("all");
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
+    
+            for(i = 0; i < result.length; i++){
+                var temp_id = "all_list_" + (i + 1);
+                var newDiv = document.createElement("div");
+                newDiv.id = temp_id;
+                temp = (i+1) + " " + result[i].toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
+                var newContent = document.createTextNode(temp);
+                newDiv.appendChild(newContent);
+                parentDiv.appendChild(newDiv);
+            }
+        }
     });
 
-
+    
+    // fill out 4 way result of spatnav search & 4 way candidate
     for (var idx = 0 ; idx < direction.length ; idx++){
         (function(){
             var way = direction[idx];
@@ -129,6 +178,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 
 
+
+    // make html element of 4 way candidate
+    // 1 : up
     chrome.devtools.inspectedWindow.eval("function candidates_up(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'up'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'up'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_up();", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
             var parentDiv = document.getElementById("candidates1");
@@ -162,7 +214,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
         }
     });
-
+    // down
     chrome.devtools.inspectedWindow.eval("function candidates_down(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'down'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'down'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_down();", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
             var parentDiv = document.getElementById("candidates2");
@@ -194,7 +246,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
         }
     });
-
+    
+    // left
     chrome.devtools.inspectedWindow.eval("function candidates_left(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'left'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'left'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_left();", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
             var parentDiv = document.getElementById("candidates3");
@@ -226,7 +279,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
         }
     });
-
+    // right
     chrome.devtools.inspectedWindow.eval("function candidates_right(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'right'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'right'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_right();", {useContentScriptContext : true}, function(result) {
         if (result.length == 0){
             var parentDiv = document.getElementById("candidates4");
@@ -260,7 +313,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
 
 
-
+    // container list
     chrome.devtools.inspectedWindow.eval("function container_list(){ var temp = document.activeElement.getSpatialNavigationContainer(); var list = []; var i = 0; while( temp != null){ list[i] = temp; i = i + 1; temp = temp.getSpatialNavigationContainer();} return list.map(a=>a.outerHTML);} container_list();", {useContentScriptContext : true}, function(result) {
         if (result === undefined){
             document.getElementById('container_list').innerText = 'undefined';
@@ -289,19 +342,37 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }); 
  }); 
 
+ // all mouseover event
  document.body.addEventListener('mouseover', function(event) {
     var id = event.srcElement.id;
     if(id){   
-        if(id.includes('candidates_up')) {
+        if (direction.includes(id)) mouseOver(id);
+        else if (id.includes("search_")) mouseOver(id);
+        else if (id.includes("visible_list")) {
+            document.getElementById(id).style.color = "red";
+            var index = parseInt(id.substr(13)) -1;
+            chrome.tabs.executeScript({
+                code : 'var tmp = (document.activeElement.focusableAreas({"mode": "visible"})['.concat(index,']); if (tmp) {tmp.style.backgroundColor = "#FCADAB"; tmp.style.outline = "thick #FFC0CB";}')
+            })
+        }
+        else if (id.includes("all_list")) {
+            var index = parseInt(id.substr(9)) -1;
+            chrome.tabs.executeScript({
+                code : 'function check(){var tmp = (document.activeElement.focusableAreas({"mode": "all"})['.concat(index,']); var tmp_visible = (document.activeElement.focusableAreas({"mode": "visible"})); if (tmp) { if (tmp_visible.includes(tmp)){; tmp.style.backgroundColor = "#FCADAB"; tmp.style.outline = "thick #FFC0CB";return 1;}else {return 3;}}} check();')
+            },function(result){
+                if (result == 3) document.getElementById(id).style.color = "blue";
+                else if (result == 1) document.getElementById(id).style.color = "red";
+                
+                // else 
+            })
+        }
+        else if(id.includes('candidates_up')) {
             document.getElementById(id).style.color = "red";
             var index = parseInt(id.substr(13)) - 1;
-            const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "up")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.backgroundColor = "#FCADAB";}')
+                code : 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "up")['.concat(index,']; if(temp) {temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";}')
             });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.outline = "thick #FFC0CB";}')
-            });
+            
         }
         else if(id.includes('candidates_down')) {
             document.getElementById(id).style.color = "red";
@@ -349,10 +420,28 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         }
     }
  });
+
+ // mouse out event of 4 way candidates
  document.body.addEventListener('mouseout', function(event) {
     var id = event.srcElement.id;
     if(id){
-        if(id.includes('candidates_up')) {
+        if (direction.includes(id)) mouseOut(id);
+        else if (id.includes("search_")) mouseOut(id);
+        else if (id.includes("visible_list")) {
+            document.getElementById(id).style.color = "black";
+            var index = parseInt(id.substr(13)) -1;
+            chrome.tabs.executeScript({
+                code : 'var tmp = (document.activeElement.focusableAreas({"mode": "visible"})['.concat(index,']); if (tmp) {tmp.style.backgroundColor = "transparent"; tmp.style.outline = "transparent";}')
+            })
+        }
+        else if (id.includes("all_list")) {
+            document.getElementById(id).style.color = "black";
+            var index = parseInt(id.substr(9)) -1;
+            chrome.tabs.executeScript({
+                code : 'var tmp = (document.activeElement.focusableAreas({"mode": "all"})['.concat(index,']); if (tmp) {tmp.style.backgroundColor = "transparent"; tmp.style.outline = "transparent";}')
+            })
+        }
+        else if(id.includes('candidates_up')) {
             document.getElementById(id).style.color = "black";
             var index = parseInt(id.substr(13) - 1);
             const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "up")[' + index + ']; if(temp)';
@@ -410,33 +499,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
  });
 
+
+ // 4 direction next target mouse over / out event (75 line)
  /**
  * call direction
  * @param {string} way keyMode string
  */
 
-for (var idx = 0 ; idx < direction.length ; idx++){
-    // set mouseover & out movement to all arguments exept candidate list
-    var tmp = direction[idx];
-    try {throw tmp}
-    catch (way) {
-        document.getElementById(way).onmouseover = function(){mouseOver(way)};
-        document.getElementById(way).onmouseout = function(){mouseOut(way)};
-        var search = "search_".concat(way);
-        var candidates = "candidates".concat((idx + 1));
-        var candidates_id = "candidates_".concat(way);
-
-        try {throw search}
-        catch (search_way){
-            document.getElementById(search_way).onmouseover = function(){mouseOver(search_way)};
-            document.getElementById(search_way).onmouseout = function(){mouseOut(search_way)};
-        }
-    }
-}
-
-
 function mouseOut(way) {
-    if (document.getElementById(way).innerText == "undefined") return;
+    if ((document.getElementById(way).innerText == "undefined")|| (document.getElementById(way) == null) ) return;
 
     document.getElementById(way).style.color = "black";
 
