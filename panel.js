@@ -433,14 +433,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             })
         }
         else if (id.includes("all_list")) {
+            document.getElementById(id).style.color = "red";
             var index = parseInt(id.substr(9)) -1;
             chrome.tabs.executeScript({
-                code : 'function check(){var tmp = (document.activeElement.focusableAreas({"mode": "all"})['.concat(index,']); var tmp_visible = (document.activeElement.focusableAreas({"mode": "visible"})); if (tmp) { if (tmp_visible.includes(tmp)){; tmp.style.backgroundColor = "#FCADAB"; tmp.style.outline = "thick #FFC0CB";return 1;}else {return 3;}}} check();')
-            },function(result){
-                if (result == 3) document.getElementById(id).style.color = "blue";
-                else if (result == 1) document.getElementById(id).style.color = "red";
-                
-                // else 
+                code : 'var tmp = (document.activeElement.focusableAreas({"mode": "all"})['.concat(index,']); if (tmp) {tmp.style.backgroundColor = "#FCADAB"; tmp.style.outline = "thick #FFC0CB";}')
             })
         }
         else if(id.includes('candidates_up')) {
