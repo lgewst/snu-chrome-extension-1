@@ -20,12 +20,12 @@ document.addEventListener("keyup", (e) => {
     const code = e.which || e.keyCode;
 
     // get keyMode settings.
-    chrome.storage.sync.get({
+    chrome.storage.local.get({
         keyMode: "ARROW",
-        isOn: true
+        isOn: true,
+        isVisible: false
     }, (items) => {
         if (document.activeElement != undefined) {
-            console.log("after first if");
             // check whether pressed key is arrow key or tab key.
             if (code == "37" || code == "38" || code == "39" || code == "40" || code == "9") {
                 if (actElement != null) {
@@ -35,33 +35,33 @@ document.addEventListener("keyup", (e) => {
                 if (left != null) {
                     left.classList.remove(NEXT_TARGET_HIGHLIGHT);
 
-                    if (left.getAttribute("tooltip") != null) {
-                        left.removeAttribute("tooltip");
+                    if (left.getAttribute("spatNavTooltip") != null) {
+                        left.removeAttribute("spatNavTooltip");
                     }
                 }
                 if (right != null) {
                     right.classList.remove(NEXT_TARGET_HIGHLIGHT);
-                    if (right.getAttribute("tooltip") != null) {
-                        right.removeAttribute("tooltip");
+                    if (right.getAttribute("spatNavTooltip") != null) {
+                        right.removeAttribute("spatNavTooltip");
                     }
                 }
                 if (up != null) {
                     up.classList.remove(NEXT_TARGET_HIGHLIGHT);
-                    if (up.getAttribute("tooltip") != null) {
-                        up.removeAttribute("tooltip");
+                    if (up.getAttribute("spatNavTooltip") != null) {
+                        up.removeAttribute("spatNavTooltip");
                     }
                 }
                 if (down != null) {
                     down.classList.remove(NEXT_TARGET_HIGHLIGHT);
-                    if (down.getAttribute("tooltip") != null) {
-                        down.removeAttribute("tooltip");
+                    if (down.getAttribute("spatNavTooltip") != null) {
+                        down.removeAttribute("spatNavTooltip");
                     }
                 }
 
-                if (items.isOn == true) {
+                if (items.isOn == true && items.isVisible == true) {
                     actElement = document.activeElement;
-                    console.log("activeElement: ");
-                    console.log(actElement);
+                    // console.log("activeElement: ");
+                    // console.log(actElement);
 
                     actElement.classList.add(ACTIVE_ELEMENT_HIGHLIGHT);
 
@@ -74,24 +74,24 @@ document.addEventListener("keyup", (e) => {
 
                     if (left != undefined) {
                         left.classList.add(NEXT_TARGET_HIGHLIGHT);
-                        left.setAttribute("tooltip", "left");
+                        left.setAttribute("spatNavTooltip", "left");
                     }
                     if (right != undefined) {
                         right.classList.add(NEXT_TARGET_HIGHLIGHT);
-                        right.setAttribute("tooltip", "right");
+                        right.setAttribute("spatNavTooltip", "right");
                     }
                     if (up != undefined) {
                         up.classList.add(NEXT_TARGET_HIGHLIGHT);
-                        up.setAttribute("tooltip", "up");
+                        up.setAttribute("spatNavTooltip", "up");
                     }
                     if (down != undefined) {
                         down.classList.add(NEXT_TARGET_HIGHLIGHT);
-                        down.setAttribute("tooltip", "down");
+                        down.setAttribute("spatNavTooltip", "down");
                     }
-                    console.log("left:"); console.log(left);
-                    console.log("right:"); console.log(right);
-                    console.log("up:"); console.log(up);
-                    console.log("down:"); console.log(down);
+                    // console.log("left:"); console.log(left);
+                    // console.log("right:"); console.log(right);
+                    // console.log("up:"); console.log(up);
+                    // console.log("down:"); console.log(down);
                 }
             }
         }

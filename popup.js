@@ -25,9 +25,11 @@ function setKeyOption(mode) {
 function saveOptions() {
     const mode = document.getElementById("keyMode").value;
     const isOn = document.getElementById("switch").checked;
-    chrome.storage.sync.set({
+    const isVisible = document.getElementById("visNextTarget").checked;
+    chrome.storage.local.set({
         keyMode: mode,
-        isOn
+        isOn,
+        isVisible
     }, () => {
         // Update status to let user know options were saved.
         const status = document.getElementById("status");
@@ -50,12 +52,14 @@ function saveOptions() {
  */
 function restoreOptions() {
     // Use default value color = 'ARROW' and isOn = true.
-    chrome.storage.sync.get({
+    chrome.storage.local.get({
         keyMode: "ARROW",
-        isOn: true
+        isOn: true,
+        isVisible: false
     }, (items) => {
         document.getElementById("keyMode").value = items.keyMode;
         document.getElementById("switch").checked = items.isOn;
+        document.getElementById("visNextTarget").checked = items.isVisible;
 
         if (items.isOn == false) {
             setKeyOption("NONE");

@@ -3,7 +3,7 @@
  * restore option when page is loaded or refreshed.
  */
 function setOption(tabId) {
-    chrome.storage.sync.get({
+    chrome.storage.local.get({
         keyMode: "ARROW",
         isOn: true
     }, (items) => {
