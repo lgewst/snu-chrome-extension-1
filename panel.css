@@ -1,0 +1,12 @@
+/* css for panel.js */
+
+div {
+    font-size: 1em;
+    line-height: 1.5em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+h3 {
+    line-height:1.5em;
+}

@@ -3,31 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Panel</title>
-    <style>
-
-        div {
-            font-size: 1em;
-            line-height: 1.5em;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-        h3 {
-            line-height:1.5em;
-        }
-
-    </style>
+    <link rel="stylesheet" href="panel.css">
 </head>
 <body>
-    
-    <input type="checkbox" id="Button_up" value="up">
-    <label for="myBtn"> To Up</label>
-    <input type="checkbox" id="Button_down" value="down">
-    <label for="myBtn"> To Down</label>
-    <input type="checkbox" id="Button_left" value="left">
-    <label for="myBtn"> To Left</label>
-    <input type="checkbox" id="Button_right" value="right">
-    <label for="myBtn"> To Right</label>
+    <section id = "check">
+        <label class = "label--checkbox">
+                <input type="checkbox" id="Button_up" value="up"> Up
+                <input type="checkbox" id="Button_down" value="down"> Down
+                <input type="checkbox" id="Button_left" value="left"> Left
+                <input type="checkbox" id="Button_right" value="right"> Right
+        </label>
+</section> 
 
     <h3>There are <span id="focus_cnt" style="color:Tomato;"></span> focusable elements</h3>
     <h2>[1] Is it container? : </h2>
