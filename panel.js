@@ -20,7 +20,6 @@ function coloring(dir) {
 
 function decoloring(dir){
     checked_cnt--;
-
     const pre_decolor = 'function find(){ var tmp = __spatialNavigation__.findCandidates(document.activeElement, "';
     chrome.tabs.executeScript({
         code: pre_decolor.concat(dir,'"); if (tmp == undefined) return; var i; for (i = 0 ; i < tmp.length ; i++){ tmp[i].style.outline = "transparent"; } } find();')
@@ -48,14 +47,12 @@ for (var idx = 0 ; idx < direction.length ; idx++){
 
 document.getElementById("Button_all").onclick = function(){
     if (this.checked){
-        
         for (var idx = 0 ; idx < direction.length ; idx++){
             try {throw direction[idx]}
             catch (way) {
                 coloring(way);
                 document.getElementById("Button_".concat(way)).checked = true;
         }
-                
     }
     checked_cnt = 4;
 }
@@ -74,6 +71,7 @@ document.getElementById("Button_all").onclick = function(){
 
 document.getElementById("Whole_page").onclick = function(){
     if (this.checked){
+        checked_cnt = 4;
         document.getElementById("Button_all").checked = true;
         document.getElementById("Button_up").checked = true;
         document.getElementById("Button_down").checked = true;
@@ -84,6 +82,7 @@ document.getElementById("Whole_page").onclick = function(){
         });      
     }
     else {
+        checked_cnt = 0;
         chrome.tabs.executeScript({
             code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
         });      
@@ -97,60 +96,23 @@ document.getElementById("Whole_page").onclick = function(){
 
 }
 
-
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     
-    checked_cnt = 0;
     // if checked remove all outliner    
-   
-    
-    if (document.getElementById("Whole_page").checked){
+    if (checked_cnt !=0){
         document.getElementById("Whole_page").checked = false;
         document.getElementById("Button_all").checked = false;
         document.getElementById("Button_up").checked = false;
         document.getElementById("Button_down").checked = false;
         document.getElementById("Button_left").checked = false;
         document.getElementById("Button_right").checked = false;
-          chrome.tabs.executeScript({
+        chrome.tabs.executeScript({
             code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
-        });      
+        });
+        checked_cnt = 0;
     }
-    else if (document.getElementById("Button_all").checked){
-        document.getElementById("Button_all").checked = false;
-        document.getElementById("Button_up").checked = false;
-        document.getElementById("Button_down").checked = false;
-        document.getElementById("Button_left").checked = false;
-        document.getElementById("Button_right").checked = false;
-    } 
-    else {if (document.getElementById("Button_up").checked){
-        document.getElementById("Button_up").checked = false;
-          chrome.tabs.executeScript({
-            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
-        });      
-    } 
-
-    if (document.getElementById("Button_down").checked){
-        document.getElementById("Button_down").checked = false;
-          chrome.tabs.executeScript({
-            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
-        });      
-    } 
    
-    if (document.getElementById("Button_left").checked){
-        document.getElementById("Button_left").checked = false;
-          chrome.tabs.executeScript({
-            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
-        });      
-    } 
-
-    if (document.getElementById("Button_right").checked){
-        document.getElementById("Button_right").checked = false;
-          chrome.tabs.executeScript({
-            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
-        });      
-    } 
-}
-
+   
     chrome.devtools.inspectedWindow.eval("document.body.focusableAreas({'mode': 'all'}).length;", {useContentScriptContext : true}, function(result) {
         document.getElementById('focus_cnt').innerText = result;
     });
@@ -282,17 +244,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             }
     
             for(i = 0; i < result.length; i++){
-                //var temp_id = id + (i + 1);
                 var temp_id = "candidates_up" + (i + 1);
                 var newDiv = document.createElement("div");
-                //newDiv.setAttribute("id", id);
                 newDiv.id = temp_id;
                 temp = "[" + (i + 1) + "] distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
     
                 // add the newly created element and its content into the DOM
-                //var currentDiv = document.getElementById("candidates_up");
                 parentDiv.appendChild(newDiv);
             }
         }
@@ -332,6 +291,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     
     // left
     chrome.devtools.inspectedWindow.eval("function candidates_left(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'left'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'left'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_left();", {useContentScriptContext : true}, function(result) {
+        if (result == undefined) return;
         if (result.length == 0){
             var parentDiv = document.getElementById("candidates3");
             while (parentDiv.firstChild) {
@@ -456,45 +416,29 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         else if(id.includes('candidates_down')) {
             document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(15)) - 1;
-            const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "down")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.backgroundColor = "#FCADAB";}')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.outline = "thick #FFC0CB";}')
+                code : 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "down")[' + index + ']; if(temp) {temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";}'
             });
         }
         else if(id.includes('candidates_left')) {
             document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(15)) - 1;
-            const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "left")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.backgroundColor = "#FCADAB";}')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.outline = "thick #FFC0CB";}')
+                code : 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "left")[' + index + ']; if(temp) {temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";}'
             });
         }
         else if(id.includes('candidates_right')) {
             document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(16)) - 1;
-            const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "right")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.backgroundColor = "#FCADAB";}')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.outline = "thick #FFC0CB";}')
+                code : 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "right")[' + index + ']; if(temp) {temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";}'
             });
         }
         else if (id.includes('container_list')) {
             document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(14)) - 1;
-            const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp = temp.getSpatialNavigationContainer();} temp';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('.style.backgroundColor = "#FCADAB"')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('.style.outline = "thick #FFC0CB"')
+                code : 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp = temp.getSpatialNavigationContainer();} temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";'
             });
         }
     }
@@ -523,56 +467,36 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         else if(id.includes('candidates_up')) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(13) - 1);
-            const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "up")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.backgroundColor = "transparent"}')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.outline = "transparent"}')
+                code: 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "up")[' + index + ']; if(temp) {temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";}'
             });
         }
         else if(id.includes('candidates_down')) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(15)) - 1;
-            const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "down")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.backgroundColor = "transparent"}')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.outline = "transparent"}')
+                code : 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "down")[' + index + ']; if(temp) {temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";}'
             });
         }
         else if(id.includes('candidates_left')) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(15)) - 1;
-            const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "left")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.backgroundColor = "transparent"}')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.outline = "transparent"}')
+                code : 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "left")[' + index + ']; if(temp) {temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";}'
             });
         }
         else if(id.includes('candidates_right')) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(16)) - 1;
-            const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "right")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.backgroundColor = "transparent"}')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('{temp.style.outline = "transparent"}')
+                code : 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "right")[' + index + ']; if(temp) {temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";}'
             });
         }
         else if (id.includes('container_list')) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(14)) - 1;
-            const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp = temp.getSpatialNavigationContainer();} temp';
             chrome.tabs.executeScript({
-                code: pre_out_spat.concat('.style.backgroundColor = "transparent"')
-            });
-            chrome.tabs.executeScript({
-                code: pre_out_spat.concat('.style.outline = "transparent"')
+                code : 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp = temp.getSpatialNavigationContainer();} temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";'
             });
         }
     }
@@ -592,24 +516,16 @@ function mouseOut(way) {
 
     if (document.getElementById(way).getAttribute('cmd') == 'next') {
         // type 4 : next target
-        const pre_out_next = 'var tmp = window.__spatialNavigation__.findNextTarget(document.activeElement, "';
         chrome.tabs.executeScript({
-            code: pre_out_next.concat(way, '"); if (tmp) tmp.style.backgroundColor = "transparent"')
+            code: 'var tmp = window.__spatialNavigation__.findNextTarget(document.activeElement, "'.concat(way, '"); if (tmp) {tmp.style.backgroundColor = "transparent"; tmp.style.outline = "transparent";}')
         });
-        chrome.tabs.executeScript({
-            code: pre_out_next.concat(way, '"); if (tmp) tmp.style.outline = "transparent"')
-        });    
     }
 
     else if(document.getElementById(way).getAttribute('cmd') == 'spatnav_search'){
         //type 3 : spatnav_search
         var real_way = way.substr(7);
-        const pre_out_spat = 'var tmp = document.activeElement.spatialNavigationSearch("';
         chrome.tabs.executeScript({
-            code: pre_out_spat.concat(real_way, '"); if (tmp) tmp.style.backgroundColor = "transparent"')
-        });
-        chrome.tabs.executeScript({
-            code: pre_out_spat.concat(real_way, '"); if (tmp) tmp.style.outline = "transparent"')
+            code: 'var tmp = document.activeElement.spatialNavigationSearch("'.concat(real_way, '"); if (tmp) {tmp.style.backgroundColor = "transparent"; tmp.style.outline = "transparent";}')
         });
     }
     
@@ -622,23 +538,15 @@ function mouseOver(way) {
 
     if (document.getElementById(way).getAttribute('cmd') == 'next') {
         // type 4 : next target
-        const pre_over_next = 'var tmp = window.__spatialNavigation__.findNextTarget(document.activeElement, "';
         chrome.tabs.executeScript({
-            code: pre_over_next.concat(way, '"); if (tmp) tmp.style.backgroundColor = "#FCADAB"')
-        });
-        chrome.tabs.executeScript({
-            code: pre_over_next.concat(way, '"); if (tmp) tmp.style.outline = "thick #FFC0CB"')
+            code: 'var tmp = window.__spatialNavigation__.findNextTarget(document.activeElement, "'.concat(way, '"); if (tmp) {tmp.style.backgroundColor = "#FCADAB"; tmp.style.outline = "thick #FFC0CB";}')
         });
     }
     else if(document.getElementById(way).getAttribute('cmd') == 'spatnav_search') {
         //type 3 : spatnav_search
         var real_way = way.substr(7);
-        const pre_over_spat = 'var tmp = document.activeElement.spatialNavigationSearch("';
         chrome.tabs.executeScript({
-            code: pre_over_spat.concat(real_way, '"); if (tmp) tmp.style.backgroundColor = "#FCADAB"')
-        });
-        chrome.tabs.executeScript({
-            code: pre_over_spat.concat(real_way, '"); if (tmp) tmp.style.outline = "thick #FFC0CB"')
+            code: 'var tmp = document.activeElement.spatialNavigationSearch("'.concat(real_way, '"); if (tmp) {tmp.style.backgroundColor = "#FCADAB"; tmp.style.outline = "thick #FFC0CB";}')
         });
     }
 }
