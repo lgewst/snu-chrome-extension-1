@@ -7,21 +7,25 @@ backgroundPageConnection.postMessage({
     tabId: chrome.devtools.inspectedWindow.tabId
 });
 
-
+var checked_cnt;
 // add basic coloring & decoloring function
-function coloring(dir) {   
+function coloring(dir) {
+    checked_cnt++;
     const pre_color = 'function find(){ var tmp = __spatialNavigation__.findCandidates(document.activeElement, "';
     chrome.tabs.executeScript({
         code: pre_color.concat(dir, '"); if (tmp == undefined) return; var i; for (i = 0 ; i < tmp.length ; i++){ tmp[i].style.outline = "solid #B0C4DE"; } } find();')
     });
+    if (checked_cnt == 4) document.getElementById("Button_all").checked = true;
 }
 
 function decoloring(dir){
+    checked_cnt--;
 
     const pre_decolor = 'function find(){ var tmp = __spatialNavigation__.findCandidates(document.activeElement, "';
     chrome.tabs.executeScript({
         code: pre_decolor.concat(dir,'"); if (tmp == undefined) return; var i; for (i = 0 ; i < tmp.length ; i++){ tmp[i].style.outline = "transparent"; } } find();')
     });
+    if (checked_cnt<4) document.getElementById("Button_all").checked = false;
 }
 
 var direction = ["up","down","left","right"];
@@ -42,11 +46,83 @@ for (var idx = 0 ; idx < direction.length ; idx++){
     }
 }
 
+document.getElementById("Button_all").onclick = function(){
+    if (this.checked){
+        
+        for (var idx = 0 ; idx < direction.length ; idx++){
+            try {throw direction[idx]}
+            catch (way) {
+                coloring(way);
+                document.getElementById("Button_".concat(way)).checked = true;
+        }
+                
+    }
+    checked_cnt = 4;
+}
+    else {
+        for (var idx = 0 ; idx < direction.length ; idx++){
+            try {throw direction[idx]}
+            catch (way) {
+                decoloring(way);
+                document.getElementById("Button_".concat(way)).checked = false;
+        }
+                
+    }
+    checked_cnt = 0;
+    }
+}
+
+document.getElementById("Whole_page").onclick = function(){
+    if (this.checked){
+        document.getElementById("Button_all").checked = true;
+        document.getElementById("Button_up").checked = true;
+        document.getElementById("Button_down").checked = true;
+        document.getElementById("Button_left").checked = true;
+        document.getElementById("Button_right").checked = true;
+          chrome.tabs.executeScript({
+            code : "function paint(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'solid #B0C4DE'; } } paint();"
+        });      
+    }
+    else {
+        chrome.tabs.executeScript({
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+        });      
+        document.getElementById("Button_all").checked = false;
+        document.getElementById("Button_up").checked = false;
+        document.getElementById("Button_down").checked = false;
+        document.getElementById("Button_left").checked = false;
+        document.getElementById("Button_right").checked = false;
+        
+    }
+
+}
+
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     
+    checked_cnt = 0;
     // if checked remove all outliner    
-     if (document.getElementById("Button_up").checked){
+   
+    
+    if (document.getElementById("Whole_page").checked){
+        document.getElementById("Whole_page").checked = false;
+        document.getElementById("Button_all").checked = false;
+        document.getElementById("Button_up").checked = false;
+        document.getElementById("Button_down").checked = false;
+        document.getElementById("Button_left").checked = false;
+        document.getElementById("Button_right").checked = false;
+          chrome.tabs.executeScript({
+            code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
+        });      
+    }
+    else if (document.getElementById("Button_all").checked){
+        document.getElementById("Button_all").checked = false;
+        document.getElementById("Button_up").checked = false;
+        document.getElementById("Button_down").checked = false;
+        document.getElementById("Button_left").checked = false;
+        document.getElementById("Button_right").checked = false;
+    } 
+    else {if (document.getElementById("Button_up").checked){
         document.getElementById("Button_up").checked = false;
           chrome.tabs.executeScript({
             code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
@@ -73,6 +149,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             code : "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
         });      
     } 
+}
 
     chrome.devtools.inspectedWindow.eval("document.body.focusableAreas({'mode': 'all'}).length;", {useContentScriptContext : true}, function(result) {
         document.getElementById('focus_cnt').innerText = result;
@@ -543,23 +620,23 @@ function mouseOver(way) {
 
     if (document.getElementById(way).getAttribute('cmd') == 'next') {
         // type 4 : next target
-        const pre_over_next = 'window.__spatialNavigation__.findNextTarget(document.activeElement, "';
+        const pre_over_next = 'var tmp = window.__spatialNavigation__.findNextTarget(document.activeElement, "';
         chrome.tabs.executeScript({
-            code: pre_over_next.concat(way, '").style.backgroundColor = "#FCADAB"')
+            code: pre_over_next.concat(way, '"); if (tmp) tmp.style.backgroundColor = "#FCADAB"')
         });
         chrome.tabs.executeScript({
-            code: pre_over_next.concat(way, '").style.outline = "thick #FFC0CB"')
+            code: pre_over_next.concat(way, '"); if (tmp) tmp.style.outline = "thick #FFC0CB"')
         });
     }
     else if(document.getElementById(way).getAttribute('cmd') == 'spatnav_search') {
         //type 3 : spatnav_search
         var real_way = way.substr(7);
-        const pre_over_spat = 'document.activeElement.spatialNavigationSearch("';
+        const pre_over_spat = 'var tmp = document.activeElement.spatialNavigationSearch("';
         chrome.tabs.executeScript({
-            code: pre_over_spat.concat(real_way, '").style.backgroundColor = "#FCADAB"')
+            code: pre_over_spat.concat(real_way, '"); if (tmp) tmp.style.backgroundColor = "#FCADAB"')
         });
         chrome.tabs.executeScript({
-            code: pre_over_spat.concat(real_way, '").style.outline = "thick #FFC0CB"')
+            code: pre_over_spat.concat(real_way, '"); if (tmp) tmp.style.outline = "thick #FFC0CB"')
         });
     }
 }
