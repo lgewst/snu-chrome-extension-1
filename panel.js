@@ -590,24 +590,24 @@ function mouseOut(way) {
 
     if (document.getElementById(way).getAttribute('cmd') == 'next') {
         // type 4 : next target
-        const pre_out_next = 'window.__spatialNavigation__.findNextTarget(document.activeElement, "';
+        const pre_out_next = 'var tmp = window.__spatialNavigation__.findNextTarget(document.activeElement, "';
         chrome.tabs.executeScript({
-            code: pre_out_next.concat(way, '").style.backgroundColor = "transparent"')
+            code: pre_out_next.concat(way, '"); if (tmp) tmp.style.backgroundColor = "transparent"')
         });
         chrome.tabs.executeScript({
-            code: pre_out_next.concat(way, '").style.outline = "transparent"')
+            code: pre_out_next.concat(way, '"); if (tmp) tmp.style.outline = "transparent"')
         });    
     }
 
     else if(document.getElementById(way).getAttribute('cmd') == 'spatnav_search'){
         //type 3 : spatnav_search
         var real_way = way.substr(7);
-        const pre_out_spat = 'document.activeElement.spatialNavigationSearch("';
+        const pre_out_spat = 'var tmp = document.activeElement.spatialNavigationSearch("';
         chrome.tabs.executeScript({
-            code: pre_out_spat.concat(real_way, '").style.backgroundColor = "transparent"')
+            code: pre_out_spat.concat(real_way, '"); if (tmp) tmp.style.backgroundColor = "transparent"')
         });
         chrome.tabs.executeScript({
-            code: pre_out_spat.concat(real_way, '").style.outline = "transparent"')
+            code: pre_out_spat.concat(real_way, '"); if (tmp) tmp.style.outline = "transparent"')
         });
     }
     
