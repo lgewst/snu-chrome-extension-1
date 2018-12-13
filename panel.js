@@ -157,6 +157,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
     chrome.devtools.inspectedWindow.eval("__spatialNavigation__.isContainer(document.activeElement);", {useContentScriptContext : true}, function(result) {
         document.getElementById('container').innerText = result;
+        if(result.toString() == "true"){
+            document.getElementById('container').style.color="#0057e7";
+        }
+        else {
+            document.getElementById('container').style.color="#d62d20";
+        }
     });
 
 
@@ -183,7 +189,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 var temp_id = "visible_list_" + (i + 1);
                 var newDiv = document.createElement("div");
                 newDiv.id = temp_id;
-                temp = (i+1) + " " + result[i].toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
+                temp = "[" + (i+1) + "] " + result[i].toString().replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
                 parentDiv.appendChild(newDiv);
@@ -281,7 +287,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 var newDiv = document.createElement("div");
                 //newDiv.setAttribute("id", id);
                 newDiv.id = temp_id;
-                temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                temp = "[" + (i + 1) + "] distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
     
@@ -313,7 +319,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 var temp_id = "candidates_down" + (i + 1);
                 var newDiv = document.createElement("div");
                 newDiv.setAttribute("id", temp_id);
-                temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                temp = "[" + (i + 1) + "] distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
     
@@ -346,7 +352,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 var temp_id = "candidates_left" + (i + 1);
                 var newDiv = document.createElement("div");
                 newDiv.setAttribute("id", temp_id);
-                temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                temp = "[" + (i + 1) + "] distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
     
@@ -378,7 +384,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 var temp_id = "candidates_right" + (i + 1);
                 var newDiv = document.createElement("div");
                 newDiv.setAttribute("id", temp_id);
-                temp = "(" + (i + 1) + ") distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                temp = "[" + (i + 1) + "] distance : " + parseInt(result[i][1]) + ", "+ result[i][0].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
     
@@ -407,7 +413,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 var temp_id = "container_list" + (i + 1);
                 var newDiv = document.createElement("div");
                 newDiv.setAttribute("id", temp_id);
-                temp = "(" + (i + 1) + ") " + result[i].replace(/(\r\n\t|\n|\r\t)/gm,"");
+                temp = "[" + (i + 1) + "] " + result[i].replace(/(\r\n\t|\n|\r\t)/gm,"");
                 var newContent = document.createTextNode(temp);
                 newDiv.appendChild(newContent);
     
@@ -426,21 +432,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (direction.includes(id)) mouseOver(id);
         else if (id.includes("search_")) mouseOver(id);
         else if (id.includes("visible_list")) {
-            document.getElementById(id).style.color = "red";
+            document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(13)) -1;
             chrome.tabs.executeScript({
                 code : 'var tmp = (document.activeElement.focusableAreas({"mode": "visible"})['.concat(index,']); if (tmp) {tmp.style.backgroundColor = "#FCADAB"; tmp.style.outline = "thick #FFC0CB";}')
             })
         }
         else if (id.includes("all_list")) {
-            document.getElementById(id).style.color = "red";
+            document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(9)) -1;
             chrome.tabs.executeScript({
                 code : 'var tmp = (document.activeElement.focusableAreas({"mode": "all"})['.concat(index,']); if (tmp) {tmp.style.backgroundColor = "#FCADAB"; tmp.style.outline = "thick #FFC0CB";}')
             })
         }
         else if(id.includes('candidates_up')) {
-            document.getElementById(id).style.color = "red";
+            document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(13)) - 1;
             chrome.tabs.executeScript({
                 code : 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "up")['.concat(index,']; if(temp) {temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";}')
@@ -448,7 +454,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             
         }
         else if(id.includes('candidates_down')) {
-            document.getElementById(id).style.color = "red";
+            document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(15)) - 1;
             const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "down")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
@@ -459,7 +465,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             });
         }
         else if(id.includes('candidates_left')) {
-            document.getElementById(id).style.color = "red";
+            document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(15)) - 1;
             const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "left")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
@@ -470,7 +476,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             });
         }
         else if(id.includes('candidates_right')) {
-            document.getElementById(id).style.color = "red";
+            document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(16)) - 1;
             const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "right")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
@@ -481,7 +487,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             });
         }
         else if (id.includes('container_list')) {
-            document.getElementById(id).style.color = "red";
+            document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(14)) - 1;
             const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp = temp.getSpatialNavigationContainer();} temp';
             chrome.tabs.executeScript({
@@ -501,21 +507,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (direction.includes(id)) mouseOut(id);
         else if (id.includes("search_")) mouseOut(id);
         else if (id.includes("visible_list")) {
-            document.getElementById(id).style.color = "black";
+            document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(13)) -1;
             chrome.tabs.executeScript({
                 code : 'var tmp = (document.activeElement.focusableAreas({"mode": "visible"})['.concat(index,']); if (tmp) {tmp.style.backgroundColor = "transparent"; tmp.style.outline = "transparent";}')
             })
         }
         else if (id.includes("all_list")) {
-            document.getElementById(id).style.color = "black";
+            document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(9)) -1;
             chrome.tabs.executeScript({
                 code : 'var tmp = (document.activeElement.focusableAreas({"mode": "all"})['.concat(index,']); if (tmp) {tmp.style.backgroundColor = "transparent"; tmp.style.outline = "transparent";}')
             })
         }
         else if(id.includes('candidates_up')) {
-            document.getElementById(id).style.color = "black";
+            document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(13) - 1);
             const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "up")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
@@ -526,7 +532,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             });
         }
         else if(id.includes('candidates_down')) {
-            document.getElementById(id).style.color = "black";
+            document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(15)) - 1;
             const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "down")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
@@ -537,7 +543,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             });
         }
         else if(id.includes('candidates_left')) {
-            document.getElementById(id).style.color = "black";
+            document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(15)) - 1;
             const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "left")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
@@ -548,7 +554,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             });
         }
         else if(id.includes('candidates_right')) {
-            document.getElementById(id).style.color = "black";
+            document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(16)) - 1;
             const pre_out_spat = 'var temp= __spatialNavigation__.findCandidates(document.activeElement, "right")[' + index + ']; if(temp)';
             chrome.tabs.executeScript({
@@ -559,7 +565,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             });
         }
         else if (id.includes('container_list')) {
-            document.getElementById(id).style.color = "black";
+            document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(14)) - 1;
             const pre_out_spat = 'var temp = document.activeElement.getSpatialNavigationContainer(); for(var i = 0; i < ' + index + '; i++) { temp = temp.getSpatialNavigationContainer();} temp';
             chrome.tabs.executeScript({
@@ -582,7 +588,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 function mouseOut(way) {
     if ((document.getElementById(way).innerText == "undefined")|| (document.getElementById(way) == null) ) return;
 
-    document.getElementById(way).style.color = "black";
+    document.getElementById(way).style.color = "rgb(61, 60, 60)";
 
     if (document.getElementById(way).getAttribute('cmd') == 'next') {
         // type 4 : next target
@@ -612,7 +618,7 @@ function mouseOut(way) {
 function mouseOver(way) {
     if (document.getElementById(way).innerText == "undefined") return;
 
-    document.getElementById(way).style.color = "red";
+    document.getElementById(way).style.color = "#d62d20";
 
     if (document.getElementById(way).getAttribute('cmd') == 'next') {
         // type 4 : next target

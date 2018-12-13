@@ -6,56 +6,102 @@
     <link rel="stylesheet" href="panel.css">
 </head>
 <body>
+    <h1 style="margin-left:2%">SpatNav Information</h1>
+    <div class="item-content">
     <section class = "content">
-        <h2>[0] View Focusable Element </h2>
-        <h3>           
-                <label class="label--checkbox">Inside whole page
-                    <input type="checkbox" class="checkbox" id="Whole_page" value="right"></label>
-            </h3>
+        <h2>View Focusable Element </h2>
+        <h3>There are <span id="focus_cnt" style="color:#d62d20;"></span> focusable elements</h3>
+        <h3><label class="pure-material-checkbox">
+            <input type="checkbox" id="Whole_page" value="right">
+            <span>Inside whole page</span>
+            </label>
+        </h3>
         <h3> From Selected item
-            <label class="label--checkbox">
-                <input type="checkbox" class="checkbox" id="Button_all" value="btn_all">All</label>
-                <label class="label--checkbox">
-            <label class="label--checkbox">
-                <input type="checkbox" class="checkbox" id="Button_up" value="up">Up</label>
-                <label class="label--checkbox">
-                    <input type="checkbox" class="checkbox" id="Button_down" value="down">Down</label>
-            <label class="label--checkbox">
-                <input type="checkbox" class="checkbox" id="Button_left" value="left">Left</label>
-            <label class="label--checkbox">
-                <input type="checkbox" class="checkbox" id="Button_right" value="right">right</label> </h3>
+            <div style="margin-top: 5px">
+                <span style="margin: 0px 10px 0px 10px">
+                    <label class="pure-material-checkbox">
+                        <input type="checkbox" id="Button_all" value="btn_all">
+                        <span>All</span>
+                    </label>
+                </span>
+                <span style="margin: 0px 10px 0px 10px">
+                    <label class="pure-material-checkbox">
+                        <input type="checkbox" id="Button_up" value="up">
+                        <span>Up</span>
+                    </label>
+                </span>
+                <span style="margin: 0px 10px 0px 10px">
+                    <label class="pure-material-checkbox">
+                        <input type="checkbox" id="Button_down" value="down">
+                        <span>Down</span>
+                    </label>
+                </span>
+                <span style="margin: 0px 10px 0px 10px">
+                    <label class="pure-material-checkbox">
+                        <input type="checkbox" id="Button_left" value="left">
+                        <span>Left</span>
+                    </label>
+                </span>
+                <span style="margin: 0px 10px 0px 10px">
+                    <label class="pure-material-checkbox">
+                        <input type="checkbox" id="Button_right" value="right">
+                        <span>Right</span>
+                    </label>
+                </span>
+        </div>
+        </h3>    
+    </section>
+    </div><br>
 
-    </section> 
+    <div class="item-content">
+        <h2>Is it container? </h2>
+        <h3><div id="container"></div></h3>
+    </div><br>
 
-    <h3>There are <span id="focus_cnt" style="color:Tomato;"></span> focusable elements</h3>
-    <h2>[1] Is it container? : </h2>
-    <h3><div id="container"></div></h3>
+    <div class="item-content">
+        <h2>Spatnav search</h2>
+        <h3>up: <div id="search_up"></div></h3>
+        <hr>
+        <h3>down: <div id="search_down"></div></h3>
+        <hr>
+        <h3>left: <div id="search_left"></div></h3>
+        <hr>
+        <h3>right: <div id="search_right"></div></h3>
+    </div><br>
 
-    <h2>[2] Spatnav search</h2>
-    <h3>up: <div id="search_up"></div></h3>
-    <h3>down: <div id="search_down"></div></h3>
-    <h3>left: <div id="search_left"></div></h3>
-    <h3>right: <div id="search_right"></div></h3>
+    <div class="item-content">
+        <h2>Next Target</h2>
+        <h3>up: <div id="up"></div></h3>
+        <hr>
+        <h3>down: <div id="down"></div></h3>
+        <hr>
+        <h3>left: <div id="left"></div></h3>
+        <hr>
+        <h3>right: <div id="right"></div></h3>
+    </div><br>
 
-    <h2>[3] Next Target</h2>
-    <h3>up: <div id="up"></div></h3>
-    <h3>down: <div id="down"></div></h3>
-    <h3>left: <div id="left"></div></h3>
-    <h3>right: <div id="right"></div></h3>
+    <div class="item-content">
+        <h2>Focusable areas</h2>
+        <h3>visible: <div id="visible"></div></h3>
+        <hr>
+        <h3>all: <div id="all"></div></h3>
+    </div><br>
 
-    <h2>[4] Focusable areas</h2>
-    <h3>visible: <div id="visible"></div></h3>
-    <h3>all: <div id="all"></div></h3>
+    <div class="item-content">
+        <h2>Next candidates</h2>
+        <h3>up: <div id="candidates1"></div></h3>
+        <hr>
+        <h3>down: <div id="candidates2"><div id="candidates_down"></div></div></h3>
+        <hr>
+        <h3>left: <div id="candidates3"><div id="candidates_left"></div></div></h3>
+        <hr>
+        <h3>right: <div id="candidates4"><div id="candidates_right"></div></div></h3>
+    </div><br>
 
-    <h2>[5] Next candidates</h2>
-    <h3>up: <div id="candidates1"></div></h3>
-    <h3>down: <div id="candidates2"><div id="candidates_down"></div></div></h3>
-    <h3>left: <div id="candidates3"><div id="candidates_left"></div></div></h3>
-    <h3>right: <div id="candidates4"><div id="candidates_right"></div></div></h3>
-
-    <h2>[6] List of containers </h2>
-    <h3 id="containerlist1"><div id="container_list"></div></h3>
-
+    <div class="item-content">
+        <h2>List of containers </h2>
+        <h3 id="containerlist1"><div id="container_list"></div></h3>
+    </div><br>
     <script src="panel.js"></script>
 </body>
 </html>
