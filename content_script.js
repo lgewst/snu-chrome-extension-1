@@ -28,6 +28,9 @@ document.addEventListener("keyup", (e) => {
         if (document.activeElement != undefined) {
             // check whether pressed key is arrow key or tab key.
             if (code == "37" || code == "38" || code == "39" || code == "40" || code == "9") {
+
+                // remove hightlight and tooltip.
+
                 if (actElement != null) {
                     actElement.classList.remove(ACTIVE_ELEMENT_HIGHLIGHT);
                 }
@@ -58,10 +61,9 @@ document.addEventListener("keyup", (e) => {
                     }
                 }
 
+                // add only spatNav and visible option are turned on.
                 if (items.isOn == true && items.isVisible == true) {
                     actElement = document.activeElement;
-                    // console.log("activeElement: ");
-                    // console.log(actElement);
 
                     actElement.classList.add(ACTIVE_ELEMENT_HIGHLIGHT);
 
@@ -70,7 +72,7 @@ document.addEventListener("keyup", (e) => {
                     up = window.__spatialNavigation__.findNextTarget(actElement, "up");
                     down = window.__spatialNavigation__.findNextTarget(actElement, "down");
 
-                    // Add a visited class name to the element. So we can style it.
+                    // Add highlight and tooltip
 
                     if (left != undefined) {
                         left.classList.add(NEXT_TARGET_HIGHLIGHT);
@@ -88,10 +90,6 @@ document.addEventListener("keyup", (e) => {
                         down.classList.add(NEXT_TARGET_HIGHLIGHT);
                         down.setAttribute("spatNavTooltip", "down");
                     }
-                    // console.log("left:"); console.log(left);
-                    // console.log("right:"); console.log(right);
-                    // console.log("up:"); console.log(up);
-                    // console.log("down:"); console.log(down);
                 }
             }
         }
