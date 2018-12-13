@@ -364,25 +364,25 @@ document.body.addEventListener("mouseover", (event) => {
             document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(13)) - 1;
             chrome.tabs.executeScript({
-                code: "var temp= __spatialNavigation__.findCandidates(document.activeElement, \"up\")[".concat(index, "]; if(temp) {temp.style.backgroundColor = \"#FCADAB\"; temp.style.outline = \"thick #FFC0CB\";}")
+                code: `var temp = __spatialNavigation__.findCandidates(document.activeElement,"up"); if (temp){if (temp[${index}]){temp[${index}].style.backgroundColor = "#FCADAB"; temp[${index}].style.outline = "thick #FFC0CB"}}`
             });
         } else if (id.includes("candidates_down")) {
             document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(15)) - 1;
             chrome.tabs.executeScript({
-                code: `var temp= __spatialNavigation__.findCandidates(document.activeElement, "down")[${index}]; if(temp) {temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";}`
+                code: `var temp = __spatialNavigation__.findCandidates(document.activeElement,"down"); if (temp){if (temp[${index}]){temp[${index}].style.backgroundColor = "#FCADAB"; temp[${index}].style.outline = "thick #FFC0CB"}}`
             });
         } else if (id.includes("candidates_left")) {
             document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(15)) - 1;
             chrome.tabs.executeScript({
-                code: `var temp= __spatialNavigation__.findCandidates(document.activeElement, "left")[${index}]; if(temp) {temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";}`
+                code: `var temp = __spatialNavigation__.findCandidates(document.activeElement,"left"); if (temp){if (temp[${index}]){temp[${index}].style.backgroundColor = "#FCADAB"; temp[${index}].style.outline = "thick #FFC0CB"}}`
             });
         } else if (id.includes("candidates_right")) {
             document.getElementById(id).style.color = "#d62d20";
             var index = parseInt(id.substr(16)) - 1;
             chrome.tabs.executeScript({
-                code: `var temp= __spatialNavigation__.findCandidates(document.activeElement, "right")[${index}]; if(temp) {temp.style.backgroundColor = "#FCADAB"; temp.style.outline = "thick #FFC0CB";}`
+                code: `var temp = __spatialNavigation__.findCandidates(document.activeElement,"right"); if (temp){if (temp[${index}]){temp[${index}].style.backgroundColor = "#FCADAB"; temp[${index}].style.outline = "thick #FFC0CB"}}`
             });
         } else if (id.includes("container_list")) {
             document.getElementById(id).style.color = "#d62d20";
@@ -418,25 +418,25 @@ document.body.addEventListener("mouseout", (event) => {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(13) - 1);
             chrome.tabs.executeScript({
-                code: `var temp= __spatialNavigation__.findCandidates(document.activeElement, "up")[${index}]; if(temp) {temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";}`
+                code: `var temp = __spatialNavigation__.findCandidates(document.activeElement,"up"); if (temp){if (temp[${index}]){temp[${index}].style.backgroundColor = "transparent"; temp[${index}].style.outline = "transparent"}}`
             });
         } else if (id.includes("candidates_down")) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(15)) - 1;
             chrome.tabs.executeScript({
-                code: `var temp= __spatialNavigation__.findCandidates(document.activeElement, "down")[${index}]; if(temp) {temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";}`
+                code: `var temp = __spatialNavigation__.findCandidates(document.activeElement,"down"); if (temp){if (temp[${index}]){temp[${index}].style.backgroundColor = "transparent"; temp[${index}].style.outline = "transparent"}}`
             });
         } else if (id.includes("candidates_left")) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(15)) - 1;
             chrome.tabs.executeScript({
-                code: `var temp= __spatialNavigation__.findCandidates(document.activeElement, "left")[${index}]; if(temp) {temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";}`
+                code: `var temp = __spatialNavigation__.findCandidates(document.activeElement,"left"); if (temp){if (temp[${index}]){temp[${index}].style.backgroundColor = "transparent"; temp[${index}].style.outline = "transparent"}}`
             });
         } else if (id.includes("candidates_right")) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
             var index = parseInt(id.substr(16)) - 1;
             chrome.tabs.executeScript({
-                code: `var temp= __spatialNavigation__.findCandidates(document.activeElement, "right")[${index}]; if(temp) {temp.style.backgroundColor = "transparent"; temp.style.outline = "transparent";}`
+                code: `var temp = __spatialNavigation__.findCandidates(document.activeElement,"right"); if (temp){if (temp[${index}]){temp[${index}].style.backgroundColor = "transparent"; temp[${index}].style.outline = "transparent"}}`
             });
         } else if (id.includes("container_list")) {
             document.getElementById(id).style.color = "rgb(61, 60, 60)";
