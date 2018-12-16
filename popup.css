@@ -338,10 +338,6 @@ h1 {
 /* css for radio button */
 /* https://codepen.io/hansmaad/pen/zBdzxp */
 
-.divOption{
-  align-content: flex-start;
-}
-
 .md-radio {
   margin: 20px 0;
   font-size: 13px;
