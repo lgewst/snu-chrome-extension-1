@@ -58,8 +58,10 @@ document.body.addEventListener("click", (event) => {
     }
     else {
         var way = id.substr(7);
+        if (direction.includes(way)){
         if (document.getElementById(id).checked) coloring(way);
         else decoloring(way);
+        }
     }
 });
 
