@@ -1,20 +1,24 @@
 /**
- * call setKeyMode
- * @param {string} mode keyMode string
+ * Handles visible options.
  */
 
 document.body.addEventListener("click", (event) => {
     const id = event.srcElement.id;
-    if (id == "ShowCurrElem"){
-        if (document.getElementById(id).checked)
-        document.getElementById("visNextTarget").checked = false;
-    }
-    else if (id == "visNextTarget"){
-        if (document.getElementById(id).checked){
-            document.getElementById("ShowCurrElem").checked = false;
+    if (id == "showCurrElem") {
+        if (document.getElementById(id).checked) {
+            document.getElementById("visNextTarget").checked = false;
+        }
+    } else if (id == "visNextTarget") {
+        if (document.getElementById(id).checked) {
+            document.getElementById("showCurrElem").checked = false;
         }
     }
 });
+
+/**
+ * call setKeyMode
+ * @param {string} mode keyMode string
+ */
 
 function setKeyOption(mode) {
     chrome.tabs.query({}, (tabs) => {
@@ -40,7 +44,7 @@ function saveOptions() {
     const mode = document.getElementById("keyMode").value;
     const isOn = document.getElementById("switch").checked;
     const isVisible = document.getElementById("visNextTarget").checked;
-    const CurrentOn = document.getElementById("ShowCurrElem").checked;
+    const CurrentOn = document.getElementById("showCurrElem").checked;
     chrome.storage.local.set({
         keyMode: mode,
         isOn,
@@ -77,7 +81,7 @@ function restoreOptions() {
         document.getElementById("keyMode").value = items.keyMode;
         document.getElementById("switch").checked = items.isOn;
         document.getElementById("visNextTarget").checked = items.isVisible;
-        document.getElementById("ShowCurrElem").checked = items.CurrentOn;
+        document.getElementById("showCurrElem").checked = items.CurrentOn;
 
         if (items.isOn == false) {
             setKeyOption("NONE");

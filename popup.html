@@ -1,8 +1,10 @@
 <html>
+
 <head>
     <title>Spatial Navigation Settings</title>
     <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
     <div>
         <input type="checkbox" id="switch" class="switch-input">
@@ -19,17 +21,15 @@
         <span class="select-bar"></span>
         <label class="select-label">KeyMode</label>
     </div>
-    <div>
-        <label class="pure-material-checkbox">
-            <input type="checkbox" id="visNextTarget">
-            <span>Visible Next Target</span>
-          </label>
-    </div>
-    <div style ="margin: 15px 0px 0px 0px" >
-        <label class="pure-material-checkbox">
-            <input type="checkbox" id="ShowCurrElem">
-            <span>Visible Focus Only</span>
-          </label>
+    <div class="divOption">
+        <div class="md-radio">
+            <input id="showCurrElem" type="radio" name="options" checked>
+            <label for="showCurrElem">Visible Active Only</label>
+        </div>
+        <div class="md-radio">
+            <input id="visNextTarget" type="radio" name="options">
+            <label for="visNextTarget">Visible Next Target</label>
+        </div>
     </div>
     <div id="status"></div>
     <div style="margin: 30px 15px 0px 15px">
@@ -37,4 +37,5 @@
     </div>
     <script src="popup.js"></script>
 </body>
+
 </html>
