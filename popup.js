@@ -1,19 +1,3 @@
-/**
- * Handles visible options.
- */
-
-document.body.addEventListener("click", (event) => {
-    const id = event.srcElement.id;
-    if (id == "showCurrElem") {
-        if (document.getElementById(id).checked) {
-            document.getElementById("visNextTarget").checked = false;
-        }
-    } else if (id == "visNextTarget") {
-        if (document.getElementById(id).checked) {
-            document.getElementById("showCurrElem").checked = false;
-        }
-    }
-});
 
 /**
  * call setKeyMode
@@ -44,12 +28,14 @@ function saveOptions() {
     const mode = document.getElementById("keyMode").value;
     const isOn = document.getElementById("switch").checked;
     const isVisible = document.getElementById("visNextTarget").checked;
-    const CurrentOn = document.getElementById("showCurrElem").checked;
+    const CurrentOn = document.getElementById("visActive").checked;
+    const VisNone = document.getElementById("visNone").checked;
     chrome.storage.local.set({
         keyMode: mode,
         isOn,
         isVisible,
-        CurrentOn
+        CurrentOn,
+        VisNone
     }, () => {
         // Update status to let user know options were saved.
         const status = document.getElementById("status");
@@ -76,12 +62,14 @@ function restoreOptions() {
         keyMode: "ARROW",
         isOn: true,
         isVisible: false,
-        CurrentOn: false
+        CurrentOn: false,
+        VisNone : false
     }, (items) => {
         document.getElementById("keyMode").value = items.keyMode;
         document.getElementById("switch").checked = items.isOn;
         document.getElementById("visNextTarget").checked = items.isVisible;
-        document.getElementById("showCurrElem").checked = items.CurrentOn;
+        document.getElementById("visActive").checked = items.CurrentOn;
+        document.getElementById("visNone").checked = items.VisNone;
 
         if (items.isOn == false) {
             setKeyOption("NONE");
