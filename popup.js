@@ -2,6 +2,20 @@
  * call setKeyMode
  * @param {string} mode keyMode string
  */
+
+document.body.addEventListener("click", (event) => {
+    const id = event.srcElement.id;
+    if (id == "ShowCurrElem"){
+        if (document.getElementById(id).checked)
+        document.getElementById("visNextTarget").checked = false;
+    }
+    else if (id == "visNextTarget"){
+        if (document.getElementById(id).checked){
+            document.getElementById("ShowCurrElem").checked = false;
+        }
+    }
+});
+
 function setKeyOption(mode) {
     chrome.tabs.query({}, (tabs) => {
         const setCode = "window.__spatialNavigation__.setKeyMode('";
@@ -26,10 +40,12 @@ function saveOptions() {
     const mode = document.getElementById("keyMode").value;
     const isOn = document.getElementById("switch").checked;
     const isVisible = document.getElementById("visNextTarget").checked;
+    const CurrentOn = document.getElementById("ShowCurrElem").checked;
     chrome.storage.local.set({
         keyMode: mode,
         isOn,
-        isVisible
+        isVisible,
+        CurrentOn
     }, () => {
         // Update status to let user know options were saved.
         const status = document.getElementById("status");
@@ -55,11 +71,13 @@ function restoreOptions() {
     chrome.storage.local.get({
         keyMode: "ARROW",
         isOn: true,
-        isVisible: false
+        isVisible: false,
+        CurrentOn: false
     }, (items) => {
         document.getElementById("keyMode").value = items.keyMode;
         document.getElementById("switch").checked = items.isOn;
         document.getElementById("visNextTarget").checked = items.isVisible;
+        document.getElementById("ShowCurrElem").checked = items.CurrentOn;
 
         if (items.isOn == false) {
             setKeyOption("NONE");

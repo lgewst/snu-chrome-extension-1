@@ -23,7 +23,8 @@ document.addEventListener("keyup", (e) => {
     chrome.storage.local.get({
         keyMode: "ARROW",
         isOn: true,
-        isVisible: false
+        isVisible: false,
+        CurrentOn: false
     }, (items) => {
         if (document.activeElement != undefined) {
             // check whether pressed key is arrow key or tab key.
@@ -90,6 +91,11 @@ document.addEventListener("keyup", (e) => {
                         down.classList.add(NEXT_TARGET_HIGHLIGHT);
                         down.setAttribute("spatNavTooltip", "down");
                     }
+                }
+                else if (items.isOn == true && items.CurrentOn == true){
+                    actElement = document.activeElement;
+                    actElement.classList.add(ACTIVE_ELEMENT_HIGHLIGHT);
+
                 }
             }
         }
