@@ -11,8 +11,8 @@ let checkedCnt;
 const direction = ["up", "down", "left", "right"];
 
 /**
- * Make / Remove outline on candidates of specific direction
- * @param {string} dir colored / decolored way
+ * Make outline on candidates of specific direction
+ * @param {string} dir colored way
  */
 function coloring(dir) {
     checkedCnt++;
@@ -23,6 +23,10 @@ function coloring(dir) {
     if (checkedCnt == 4) document.getElementById("Button_all").checked = true;
 }
 
+/**
+ * Remove outline on candidates of specific direction
+ * @param {string} dir decolored way
+ */
 function decoloring(dir) {
     checkedCnt--;
     const preDecolor = "function find(){ var tmp = __spatialNavigation__.findCandidates(document.activeElement, \"";
@@ -37,7 +41,7 @@ function decoloring(dir) {
  */
 document.body.addEventListener("click", (event) => {
     const id = event.srcElement.id;
-    if (id == "Whole_page"){
+    if (id == "Whole_page") {
         if (document.getElementById(id).checked) {
             ChangeCheckAll(true);
             document.getElementById("Button_all").checked = true;
@@ -51,16 +55,14 @@ document.body.addEventListener("click", (event) => {
             });
             document.getElementById("Button_all").checked = false;
         }
-    }
-    else if(id == "Button_all"){
+    } else if (id == "Button_all") {
         if (document.getElementById(id).checked) ChangeCheckAll(true);
         else ChangeCheckAll(false);
-    }
-    else {
-        var way = id.substr(7);
-        if (direction.includes(way)){
-        if (document.getElementById(id).checked) coloring(way);
-        else decoloring(way);
+    } else {
+        let way = id.substr(7);
+        if (direction.includes(way)) {
+            if (document.getElementById(id).checked) coloring(way);
+            else decoloring(way);
         }
     }
 });
@@ -69,15 +71,14 @@ document.body.addEventListener("click", (event) => {
  * Check / UnCheck focusable element button (4way)
  * @param {boolean} bool true = checked, false = unchecked
  */
-function ChangeCheckAll(bool){
-    for (var idx = 0; idx < direction.length; idx++) {
+function ChangeCheckAll(bool) {
+    for (let idx = 0; idx < direction.length; idx++) {
         try { throw direction[idx]; } catch (way) {
             document.getElementById("Button_".concat(way)).checked = bool;
             if (bool) {
                 coloring(way);
                 checkedCnt = 4;
-            }
-            else {
+            } else {
                 decoloring(way);
                 checkedCnt = 0;
             }
@@ -86,11 +87,10 @@ function ChangeCheckAll(bool){
 }
 
 /**
- * 
+ *
  * Send Message on every focus changing event
  */
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    
     // remove all outliner
     if (checkedCnt != 0) {
         ChangeCheckAll(false);
@@ -100,8 +100,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             code: "function remove(){ var tmp = document.body.focusableAreas({'mode': 'all'}); if (tmp == undefined) return; var j; for (j = 0 ; j < tmp.length ; j++){ tmp[j].style.outline = 'transparent'; } } remove();"
         });
     }
-    
-    // show information of Spatnav on devtool 
+
+    // show information of Spatnav on devtool
     chrome.devtools.inspectedWindow.eval("document.body.focusableAreas({'mode': 'all'}).length;", { useContentScriptContext: true }, (result) => {
         document.getElementById("focus_cnt").innerText = result;
     });
@@ -285,7 +285,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             }
         }
     });
-    
+
     // 4: right
     chrome.devtools.inspectedWindow.eval("function candidates_right(){ var temp = __spatialNavigation__.findCandidates(document.activeElement, 'right'); var distance = []; var i; var dis_candidate = []; for(i = 0; i < temp.length; i++){ distance[i] = __spatialNavigation__.getDistanceFromTarget(document.activeElement, temp[i], 'right'); dis_candidate[i] = [temp[i].outerHTML, distance[i]];} return dis_candidate;} candidates_right();", { useContentScriptContext: true }, (result) => {
         if (result.length == 0) {
